@@ -1,0 +1,46 @@
+language: zh-CN
+# Header
+menu:
+  主页: /
+  文章归档: /archives
+  关于本站: /about
+  练习: /exercise
+rss: /atom.xml
+
+# Content
+excerpt_link: 阅读全文
+fancybox: false
+mathjax: false
+
+# Sidebar
+sidebar: right
+widgets:
+- recent_posts
+- archive
+- tag
+- tagcloud
+- links
+
+# Links
+links:
+  csdn博客: http://blog.csdn.net/u012844719
+  数字生活|前端: http://www.dglives.com/
+  春熙路: http://www.moonwen.com/
+  麻凯倩前端: http://makaiqian.com/
+  晚晴幽草轩: http://jeffjade.com/
+  Vajoy: http://www.cnblogs.com/vajoy
+  右三: https://www.u3xyz.com/
+
+# Miscellaneous
+google_analytics:
+favicon: /favicon.png
+twitter:
+google_plus:
+fb_admins: 
+fb_app_id:
+
+toc:
+  maxdepth: 3
+
+# Baidu share
+baidushare: true

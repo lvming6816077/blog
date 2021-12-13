@@ -1,0 +1,82 @@
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+
+  <div class="article-inner <%-index ? 'list': ''%>">
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
+      <header class="article-header">
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+      </header>
+    <% } %>
+    <div class="article-entry" itemprop="articleBody">
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link){ %>
+          <p class="article-more-link">
+            <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
+          </p>
+        <% } %>
+      <% } else { %>
+        <%- post.content %>
+      <% } %>
+    </div>
+
+    <footer class="article-footer">
+      <% if ((config.baidushare || theme.baidushare)&& !index){ %>
+        <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link" data-share="baidu" data-title="<%= post.title %>">分享到</a>
+      <% } %>
+
+      <a href="<%- post.permalink %>#ds-thread" class="article-comment-link"><span class="dot">•</span>
+      
+      
+      <%- partial('post/date', {class_name: 'article-date-l', date_format: null}) %>
+      
+
+      <%- partial('post/tag') %>
+    </footer>
+  </div>
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
+</article>
+<%if(index){%>
+  <!-- 云跟帖配置JavaScript 配置 去除于 20190402 
+<script>var yunModuleEnv = true;</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+  var yunTieProductKey = "eb0b276c0f00410db0322e1a9a9b8bbc";
+  Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vZXh0ZW5kL2xpc3Rfam9pbl9zY3JpcHQuaHRtbA==", true);
+</script>-->
+<%}%>
+<% if (!index){ %>
+  <!-- 云跟帖配置JavaScript 配置 去除于 20190402 
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    <script>
+    var cloudTieConfig = {
+      url: document.location.href.replace('https','').replace('http',''),
+      sourceId: "",
+      productKey: "eb0b276c0f00410db0322e1a9a9b8bbc",
+      target: "cloud-tie-wrapper"
+    };
+    var yunManualLoad = true;
+    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+    </script>-->
+<% } else if (!index && post.comments && (config.disqus_shortname || theme.disqus_shortname)){ %>
+  <section id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
+<% } %>
+
+<%if (!index){%>
+  <!--搜狐畅言 PC和WAP自适应版 添加于20190402 删除于20200402-->
+<div id="SOHUCS" sid="<%= post._id %>" ></div> 
+<script type="text/javascript"> 
+/*(function(){ 
+var appid = 'cyuabuJwF'; 
+var conf = 'prod_2da707f8ba1b3103d72ef0b575e52e20'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); */</script>
+<%}%>

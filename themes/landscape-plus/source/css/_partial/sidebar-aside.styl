@@ -1,0 +1,45 @@
+#sidebar
+  @media mq-normal
+    column(sidebar-column)
+
+.widget-wrap
+  margin: 25px 0
+
+.widget-title
+  @extend $block-caption
+.widget-title-l 
+  color: #979797 !important;
+  padding-bottom: 10px;
+  text-align: center;
+  border-bottom: 1px dotted #ccc;
+.widget
+  color: color-sidebar-text
+  text-shadow: 0 1px #fff
+  background: color-widget-background
+  box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  padding: 15px
+  padding-bottom: 8px;
+  border-radius: 3px
+  a
+    color: #666
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+      color: color-link
+  ul, ol, dl
+    ul, ol, dl
+      margin-left: 15px
+      list-style: disc
+
+.ac-conf
+  position: relative;
+  &:before
+    content: '';
+    width: 50px;
+    height: 62px;
+    position: absolute;
+    background-size: 68% 68%;
+    background-repeat: no-repeat;
+    left: 30px;
+    top: 19px;
+    background-image: url('https://oc5n93kni.qnssl.com/hot-32d141.png');

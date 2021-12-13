@@ -1,0 +1,8 @@
+<% if (site.categories.length){ %>
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title-l"><%= __('categories') %></h3>
+      <%- list_categories() %>
+    </div>
+  </div>
+<% } %>

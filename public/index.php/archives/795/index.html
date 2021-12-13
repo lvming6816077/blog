@@ -1,0 +1,904 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <link rel="manifest" href="manifest.json">
+
+<meta name="referrer" content="never">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="application-name" content="吕小鸣">
+<meta name="apple-mobile-web-app-title" content="吕小鸣">
+<meta name="msapplication-starturl" content="/">
+<link rel="icon" href="https://avatars2.githubusercontent.com/u/7931760?s=192&v=4">
+<link rel="apple-touch-icon" href="https://avatars2.githubusercontent.com/u/7931760?s=192&v=4">
+  
+  <title>移动web性能优化从入门到进阶 | 吕小鸣前端博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="关于前端性能优化相关的技术知识，网上随便搜一些就有很多，本文将系统性的从初级到高级的思路，总结移动前端性能优化各个方面的相关技术点，内容来自笔者以往经验的总结，希望读者可以花些时间看看。 在目前大多数刚从事前端开发，或者是正在学习前端开发的同学来说，性能优化对于他们可能还比较远，但是脱颖而出，拉开差距的点，往往就在与性能优化，和理论知识不同，性能优化往往来自日常的工作经验中总结而来，也是目前大厂面">
+<meta name="keywords" content="移动web,性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动web性能优化从入门到进阶">
+<meta property="og:url" content="http://www.nihaoshijie.com.cn/index.php/archives/795/index.html">
+<meta property="og:site_name" content="吕小鸣前端博客">
+<meta property="og:description" content="关于前端性能优化相关的技术知识，网上随便搜一些就有很多，本文将系统性的从初级到高级的思路，总结移动前端性能优化各个方面的相关技术点，内容来自笔者以往经验的总结，希望读者可以花些时间看看。 在目前大多数刚从事前端开发，或者是正在学习前端开发的同学来说，性能优化对于他们可能还比较远，但是脱颖而出，拉开差距的点，往往就在与性能优化，和理论知识不同，性能优化往往来自日常的工作经验中总结而来，也是目前大厂面">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img.mukewang.com/5c7bda1c000100a807400250.jpg">
+<meta property="og:updated_time" content="2019-03-03T13:53:56.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动web性能优化从入门到进阶">
+<meta name="twitter:description" content="关于前端性能优化相关的技术知识，网上随便搜一些就有很多，本文将系统性的从初级到高级的思路，总结移动前端性能优化各个方面的相关技术点，内容来自笔者以往经验的总结，希望读者可以花些时间看看。 在目前大多数刚从事前端开发，或者是正在学习前端开发的同学来说，性能优化对于他们可能还比较远，但是脱颖而出，拉开差距的点，往往就在与性能优化，和理论知识不同，性能优化往往来自日常的工作经验中总结而来，也是目前大厂面">
+<meta name="twitter:image" content="https://img.mukewang.com/5c7bda1c000100a807400250.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="吕小鸣前端博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+
+<style type="text/css">
+    .pwa-tips {
+        position: fixed;
+        top: 13px;
+        left: 10%;
+        right: 10%;
+        height: 50px;
+        border-radius: 3px;
+        text-align: center;
+        background-color: #343a44;
+        color: #f1f1f1;
+        line-height: 50px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(22,22,22,.5), 0 2px 3px rgba(2,2,2,.5);
+        transition: all 1s;
+        opacity: 0;
+        display: none;
+    }
+    .pwa-tips .close {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        background-color: #fff;
+        width: 15px;
+        height: 15px;
+        line-height: 13px;
+        color: #000;
+        border-radius: 50%;
+        position: 9;
+    }
+
+</style>
+<script type="text/javascript">
+// index.html
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+      .then(function (registration) {
+        // 注册成功
+        console.log('ServiceWorker registration successful with scope: ', registration.scope)
+      })
+      .catch(function (err) {
+        // 注册失败:(
+        console.log('ServiceWorker registration failed: ', err)
+      })
+  })
+}
+
+</script>
+</head></html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吕小鸣前端博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">热爱前端，关注前端开发技术</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">文章归档</a>
+        
+          <a class="main-nav-link" href="/about">关于本站</a>
+        
+          <a class="main-nav-link" href="/exercise">练习</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.nihaoshijie.com.cn">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-移动web性能优化从入门到进阶" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner ">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    <div style="background-image:url(https://img.mukewang.com/5c7bda1c000100a807400250.jpg);" class="post-pic"></div>
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      移动web性能优化从入门到进阶
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于前端性能优化相关的技术知识，网上随便搜一些就有很多，本文将系统性的从初级到高级的思路，总结移动前端性能优化各个方面的相关技术点，内容来自笔者以往经验的总结，希望读者可以花些时间看看。</p>
+<p>在目前大多数刚从事前端开发，或者是正在学习前端开发的同学来说，性能优化对于他们可能还比较远，但是脱颖而出，拉开差距的点，往往就在与性能优化，和理论知识不同，性能优化往往来自日常的工作经验中总结而来，也是目前大厂面试前端必问的知识点，所以重要性就不言而喻了。</p>
+<h2><span id="一入门篇">一，入门篇</span></h2><p>首先，重要的事情说三遍：</p>
+<blockquote>
+<p>移动web性能优化原理知识同样适用于PCweb端！<br>移动web性能优化原理知识同样适用于PCweb端！<br>移动web性能优化原理知识同样适用于PCweb端！</p>
+</blockquote>
+<a id="more"></a>
+<h3><span id="1资源合并与压缩">1.资源合并与压缩</span></h3><p><strong>为什么要压缩</strong>？</p>
+<p>不同于大部分放在服务端的后台代码，前端所有的文件程序代码都是要通过浏览器下载下来运行使用，这就牵扯到网络和请求延时，所以前端文件的精简和压缩决定了前端性能的第一步。</p>
+<p>介于目前的前端框架类库，webpack，vue-cli等等，已经可以直接将这一步操作集成到我们的系统项目中了，可以直接查看各个框架的文档来进行配置，单纯的使用原生技术，可以参考下面：</p>
+<h4><span id="html的压缩">html的压缩</span></h4><p> HTML代码压缩就是压缩这些在文本文件中有意义，但是在HTML中不显示的字符，包括空格,制表符,换行符等，还有一些其他意义的字符，如HTML注释也可以被压缩。</p>
+<ul>
+<li>Nodejs的<a href="https://www.npmjs.com/package/html-minifier" target="_blank" rel="noopener">html-minifier</a>。</li>
+<li>在线压缩工具，站长工具等等。</li>
+</ul>
+<h4><span id="css和javascript文件的压缩">CSS和JavaScript文件的压缩</span></h4><p>JavaScript压缩，主要是去除多余的换行和空格等等，对于语法来说，JavaScript可以选择<a href="https://www.zhihu.com/question/47047191" target="_blank" rel="noopener">混淆压缩</a>和非混淆压缩，无论哪种压缩都是为了减少JavaScript的文件大小，当然出于前端代码保护来看，混淆压缩会大大破坏原有的阅读逻辑，增加压缩比，从而给代码添加一层保护。<br>CSS压缩，同理是去除多余的换行和空格等等，由于CSS文件的特殊性暂时无法实现混淆压缩，压缩主要是将大量的换行去除，可以减少不少的文件大小。</p>
+<ul>
+<li>Nodejs的<a href="https://github.com/mishoo/UglifyJS2" target="_blank" rel="noopener">uglifyjs2</a>是一个强大的JavaScript压缩库。</li>
+<li>Nodejs的<a href="https://www.npmjs.com/package/clean-css" target="_blank" rel="noopener">clean-css</a>是一个强大的CSS压缩库。</li>
+<li>在线压缩工具，站长工具等等。</li>
+</ul>
+<h4><span id="图片的压缩">图片的压缩</span></h4><p>对于常见的前端项目，关于图片的使用，主要有以下两种：</p>
+<ul>
+<li>固定图标，背景，按钮icon等等，这些图片有一个特点就是固定和用户无关，一般是放在源码包里面，由前端代码直接引入。</li>
+<li>人物头像，文章配图，内容图片等等，这些非固定图片一般由用户上传，有很强的用户性，这些图片一般放在<code>CDN</code>上，前端通过链接请求。</li>
+</ul>
+<ol>
+<li>对于<strong>固定图片</strong>，推荐<a href="https://tinypng.com/" target="_blank" rel="noopener">https://tinypng.com/</a>在线压缩之后再进行引入，支持png，jpeg类型的图片，属于有损压缩，去除图片一些不必要的元数据，把相似像素的24bit位用8bit位来表示，肉眼很难区分，压缩率70%。<br><img src="//img.mukewang.com/5c738b1e0001a5a802690253.png" alt="图片描述"><ol start="2">
+<li>采用<strong>CSS雪碧图</strong>：把你的网站用到的一些图片整合到一张单独的图片中：<br>优点：减少HTTP请求的数量(通过<code>backgroundPosition</code>定位所需图片)。<br>缺点：整合图片比较大时，加载比较慢(如果这张图片没有加载成功，整个页面会失去图片信息)。</li>
+</ol>
+</li>
+<li>对于<strong>非固定图片</strong>，常见的优化压缩主要有以下几种原则：<br>优先使用压缩率高的<code>jpeg</code>类型图片，缺点是不支持透明。<br>有条件的话使用<a href="https://developers.google.com/speed/webp/" target="_blank" rel="noopener">webP</a>(一种Google开发的新类型)类型图片是最佳选择，相比于jpeg，有更小的文件尺寸和更高的图像质量。</li>
+</ol>
+<h4><span id="资源合并">资源合并</span></h4><p>在前端编码的时候将css、js等静态资源文件合并压缩之外，我们还可以在页面中将多个css、js的请求合并为一个请求。文件的合并带来的是http请求数的减少，尤其是在移动端，每一个http请求带来的是<code>慢启动</code>，<code>三次握手</code>，<code>连接建立</code>，所以资源的合并是由为重要的，合并和不合并对比：<br><img src="//img.mukewang.com/5c739365000133da04800363.png" alt="图片描述"></p>
+<h3><span id="2浏览器加载原理优化">2.浏览器加载原理优化</span></h3><p>HTML页面加载渲染的过程：<br><img src="//img.mukewang.com/5c739e320001bc8310380478.jpg" alt="图片描述"></p>
+<p>根据上图我们来屡一下整个流程：</p>
+<ol>
+<li>当浏览器从服务器接收到了HTML文档，并把HTML在内存中转换成DOM树，在转换的过程中如果发现某个节点(node)上引用了CSS或者 IMAGE，就会再发1个request去请求CSS或image,然后继续执行下面的转换，而不需要等待request的返回，当request返回 后，只需要把返回的内容放入到DOM树中对应的位置就OK。</li>
+<li>但当引用了JS的时候，浏览器发送1个js request就会一直等待该request的返回。</li>
+<li>因为浏览器需要1个稳定的DOM树结构，而JS中很有可能有代码直接改变了DOM树结构，浏览器为了防止出现JS修改DOM树，需要重新构建DOM树的情况，所以 就会<code>阻塞</code>其他的下载和呈现。<br>那么如何解决和避免阻塞的问题呢，我们通过测试代码分别测试不同情况下引入js和css的问题如下：</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">”stylesheet”</span> <span class="attr">type</span>=<span class="string">”text/css”</span> <span class="attr">href</span>=<span class="string">”stylesheet.css”</span> <span class="attr">media</span>=<span class="string">”screen”</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">”stylesheet”</span> <span class="attr">type</span>=<span class="string">”text/css”</span> <span class="attr">href</span>=<span class="string">”page-animation.css”</span> <span class="attr">media</span>=<span class="string">”screen”</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span> =<span class="string">”text/javascript”</span> &gt;</span></span><br><span class="line"><span class="javascript">          <span class="keyword">var</span> f = <span class="number">1</span>;</span></span><br><span class="line">          f++;</span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">script</span> &gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">”download-button.png”</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>测试过程省略，可以参考<a href="https://www.nihaoshijie.com.cn/index.php/archives/530/">这里</a>，我们可以得到如下的结论：</p>
+<ul>
+<li>浏览器存在并发加载：资源请求是并发请求的。</li>
+<li>浏览器中可以支持并发请求，不同浏览器所支持的并发数量不同（以域名划分），以Chrome为例，并发上限为6优化点： 把CDN资源分布在多个域名下。</li>
+<li>css 在head中通过link引入会阻塞页面的渲染，处于页面样式，我们必须这样放置。</li>
+<li>直接通过<code>&lt;script src&gt;</code>引入的外部js会阻塞后面节点的渲染，所以外部js尽量放在body底部。</li>
+<li>在head里面尽量不要引入js。</li>
+<li>如果要引入js 尽量将js内嵌。</li>
+<li>把内嵌js放在所有link引入css的前面。</li>
+<li>对于要阻塞后续内容的的外部js<code>&lt;script src&gt;</code>，需要增加<code>defer</code>来解决。</li>
+</ul>
+<h3><span id="3缓存优化">3.缓存优化</span></h3><blockquote>
+<p><em>如果一个H5页面没有利用任何缓存，那么这个页面将没有任何存在的意义。</em></p>
+</blockquote>
+<p>从从HTTP协议缓存，到浏览器缓存，再到APP Cache，一直在最近比较火的Service worker，我们可以选择多种的缓存方式，入门基本来说说HTTP协议缓存：<br><img src="//img.mukewang.com/5c73a73f0001eff709030569.jpg" alt="图片描述"></p>
+<h4><span id="强缓存expiresampcache-control">强缓存：Expires&amp;Cache-Control</span></h4><p>当浏览器对某个资源的请求命中了强缓存时，返回的HTTP状态为200，在chrome的开发者工具的network里面 size会显示为from disk cache，这种情况下是<strong>不用发送任何请求</strong>，如下图<img src="//img.mukewang.com/5c73a9b500011ffa07890592.jpg" alt="图片描述"></p>
+<ul>
+<li>Expires：指定了在浏览器上缓冲存储的页距过期还有多少时间，等同Cache-control中的max-age的效果，如果同时存在，则被Cache-Control的max-age覆盖。</li>
+<li>Cache-Control：<ul>
+<li>public：响应被缓存，并且在多用户间共享。</li>
+<li>private：默认值，响应只能够作为私有的缓存(e.g., 在一个浏览器中)，不能再用户间共享；</li>
+<li>no-cache：响应不会被缓存,而是实时向服务器端请求资源。</li>
+<li>max-age：数值，单位是秒，从请求时间开始到过期时间之间的秒数。基于请求时间（Date字段）的相对时间间隔，而不是绝对过期时间；<h4><span id="协商缓存last-modifiedampetag">协商缓存：Last-Modified&amp;Etag</span></h4>当浏览器对某个资源的请求没有命中强缓存，就会发一个请求到服务器，验证协商缓存是否命中，如果协商缓存命中，请求响应返回的http状态为304并且会显示一个Not Modified的字符串，比如你打开京东的首页，按f12打开开发者工具，再按f5刷新页面，查看network，可以看到有不少请求就是命中了协商缓存的：<br><img src="//img.mukewang.com/5c73aba800012d8e08000191.jpg" alt="图片描述"></li>
+</ul>
+</li>
+<li>Last-Modified/If-Modified-Since：本地文件在服务器上的最后一次修改时间。缓存过期时把浏览器端缓存页面的最后修改时间发送到服务器去，服务器会把这个时间与服务器上实际文件的最后修改时间进行对比，如果时间一致，那么返回304，客户端就直接使用本地缓存文件。</li>
+<li>Etag/If-None-Match：(EntityTags)是URL的tag，用来标示URL对象是否改变，一般为资源实体的哈希值。和Last-Modified类似，如果服务器验证资源的ETag没有改变（该资源没有更新），将返回一个304状态告诉客户端使用本地缓存文件。Etag的优先级高于Last-Modified，Etag主要为了解决</li>
+<li>Last-Modified 无法解决的一些问题。<ul>
+<li>文件也许会周期性的更改，但是他的内容并不改变，不希望客户端重新get；</li>
+<li>If-Modified-Since能检查到的粒度是s级；</li>
+<li>某些服务器不能精确的得到文件的最后修改时间。<h3><span id="4懒加载与预加载">4.懒加载与预加载</span></h3>懒加载对于移动web端，尤其是最常见的滚动加载场景是一项非常重要的优化措施。而预加载则常常应用于多tab场景的页面，让用户更快的看到打开的下一个页面。<h4><span id="懒加载">懒加载</span></h4></li>
+</ul>
+</li>
+<li>图片进入可视区域之后请求图片资源。</li>
+<li>对于电商等图片很多，页面很长的业务场景适用。</li>
+<li>减少无效资源的加载。</li>
+<li>并发加载的资源过多会会阻塞js的加载，影响网站的正常使用。<br>img src被设置之后，webkit解析到之后才去请求这个资源。所以我们希望图片到达可视区域之后，<code>img src</code>才会被设置进来，没有到达可视区域前并不现实真正的src，而是类似一个1px的占位符。</li>
+</ul>
+<h4><span id="预加载">预加载</span></h4><ul>
+<li>图片等静态资源在使用之前的提前请求。</li>
+<li>资源使用到时能从缓存中加载，提升用户体验。</li>
+<li>点击操作前预先加载下一屏数据。</li>
+</ul>
+<p>ok，读到这里，对于一些刚入门的前端玩家，或者是还在学习前端的同学，掌握了上面的入门级性能优化基础知识，才能算是基本的合格，真正更进一步的优化，更适合移动端web的性能点，可以参考进阶版：</p>
+<h2><span id="二进阶篇">二，进阶篇</span></h2><h3><span id="1资源合并与压缩">1.资源合并与压缩</span></h3><h4><span id="启用gzip">启用GZIP</span></h4><p>gzip是GNUzip的缩写，最早用于UNIX系统的文件压缩。HTTP协议上的gzip编码是一种用来改进web应用程序性能的技术，web服务器和客户端（浏览器）必须共同支持gzip。目前主流的浏览器，Chrome,firefox,IE等都支持该协议。常见的服务器如Apache，Nginx，IIS同样支持gzip。<br><strong>gizp流程</strong>：</p>
+<ul>
+<li>浏览器请求url，并在request header中设置属性accept-encoding:gzip。</li>
+<li>服务器支持gzip，response headers返回包含content-encoding:gzip。</li>
+<li>开启gzip可以达到80%的压缩率，即1MB的文件下载下来只需要200K，大大减少传输效率，是一项非常重要的资源压缩手段。</li>
+</ul>
+<p>Nginx中开启gzip：<br><img src="//img.mukewang.com/5c7601e40001ea1a06000122.jpg" alt="图片描述"></p>
+<h4><span id="升级http20">升级HTTP/2.0</span></h4><p>HTTP/2是HTTP协议自1999年HTTP 1.1发布后的首个更新，主要基于<a href="https://zh.wikipedia.org/zh-hans/SPDY" target="_blank" rel="noopener">SPDY</a>协议（是Google开发的基于TCP的应用层协议，用以最小化网络延迟，提升网络速度，优化用户的网络使用体验）。<br><strong>优化原理：</strong><br>根据上文中说的资源合并问题，浏览器可以同时建立有限个TCP连接，而每个连接都要经过<code>慢启动</code>，<code>三次握手</code>，<code>连接建立</code>，HTTP1.1为了解决这个问题推出了keep-alive，即保持连接不被释放，但是真正的这些连接下载资源是一个线性的流程：一个资源的请求响应返回后，下一个请求才能发送。这被称为<a href="https://zh.wikipedia.org/wiki/%E9%98%9F%E5%A4%B4%E9%98%BB%E5%A1%9E" target="_blank" rel="noopener">线头阻塞</a>，为了彻底解决此问题，HTTP2.0带来了<a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">多路复用</a>：<br><img src="//img.mukewang.com/5c7622b10001789107790765.png" alt="图片描述"><br>HTTP2.0的其他新特性也有助于页面的打开速度：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">二进制分帧</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">服务器推送</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">头部压缩</a></li>
+</ul>
+<h4><span id="合并资源-vs-并行加载资源">合并资源 vs 并行加载资源？</span></h4><p>现在回过头来探讨一下上文说的资源合并问题，有了HTTP2.0之后，我们是否还需要合并资源，目前看需要遵循下面的原则：</p>
+<ul>
+<li><p><strong>停止合并文件</strong><br>在HTTP/1.1中，CSS，JavaScript被压缩到了一个文件，图片被合并到了一张雪碧图上。合并CSS、JavaScript和图片极大地减少了HTTP的请求数，在HTTP/1.1中能获得显著的性能提升。<br>但是，在HTTP/2.0中合并文件不再是一个好的办法。虽然合并依然可以提高压缩率，但它带来了代价高昂的缓存失效。即使有一行代码改变了，整个文件就要重新打包压缩，浏览器也会强制重新加载新的文件。</p>
+</li>
+<li><p><strong>尽量不要在HTML里内联资源</strong><br>非特殊的代码（rem适配代码，上报代码等）之外，尽量不要使用内联资源，在极端情况下，这确实能够减少给定网页的HTTP请求数。但是，和文件合并一样，HTTP/2优化时你不应该内联文件。内联意味着浏览器不能缓存单个的资源。如果你将所有页面使用的CSS声明嵌入了每一个HTML文件，这些文件每次都要从服务端获取。这导致用户在访问任何页面时都要传输额外的字节。</p>
+</li>
+<li><strong>合并域名</strong><br>拆分域名是让浏览器建立更多TCP连接的通常手段，浏览器限制了单个服务器的连接数量，但是通过将网站上的资源切分到几个域上，你可以获得额外的TCP连接，但是每个拆分的域名都会带来额外的DNS查询、握手，新连接的建立，根据HTTP2.0多路复用的原则：<em>HTTP2采用多路复用是指，在同一个域名下，开启一个TCP的connection，每个请求以stream的方式传输</em>，域名的合并可以带来更多的多路复用，如下图在chrome的Network面板中查看HTTP2.0，注意protocol和ConnectID相同则表示启用复用:<br><img src="//img.mukewang.com/5c762a8e0001458821940784.png" alt="图片描述"></li>
+</ul>
+<h4><span id="合理使用icon类图片base64化">合理使用icon类图片base64化</span></h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"data:image/gif;base64,R0..."</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在页面使用的背景类图片icon类图片，不多且比较小的情况下，可以把图片转成base64编码嵌入到html页面或者CSS文件中，这样可以减少页面的HTTP请求数。需要注意的是，要保证图片较小，一般超过5kb的就不推荐base64嵌入显示了。<a href="https://www.zhihu.com/question/31155574" target="_blank" rel="noopener">为什么是5kb？</a>。<br>同时，采用Webpack的<a href="https://github.com/webpack-contrib/url-loader" target="_blank" rel="noopener">url-loader</a>可以帮我们在不影响代码可读性的情况下，解决base64字符串问题。</p>
+<h4><span id="icon-font">Icon Font</span></h4><p>IconFont技术起源于Web领域的Web Font技术，它是把一些简单的图标制作成字体，然后让图标变成和字体一样使用，Icon 的设计和使用在近几年的发展中，也经历了由当初的 img 方案 到现如今的 svg 方案，有以下优点：</p>
+<ul>
+<li>字体是矢量的，所以可以随意改变大小。</li>
+<li>因为它是字体，所以所有字体的css都可以使用，比如font-size，color，background，opacity等。</li>
+<li>减少图片请求数。</li>
+<li>iconfont没有兼容性问题，IE6，Android2.3都能够兼容。</li>
+</ul>
+<h3><span id="2浏览器加载原理优化">2.浏览器加载原理优化</span></h3><h4><span id="首屏资源优化">首屏资源优化</span></h4><ul>
+<li><p>剥离首屏资源<br>首屏的快速显示，可以大大提升用户对页面速度的感知，因此应尽量针对首屏的快速显示做优化，基于联通3G网络平均338KB/s(2.71Mb/s)，所以首屏资源不应超过1014KB，剥离首屏需要的资源，非首屏的资源单独合并，采用懒加载。这个原则适用上文的资源合并和加载中的场景。</p>
+</li>
+<li><p>按需加载<br>将不影响首屏的资源和当前屏幕资源不用的资源放到用户需要时才加载，可以大大提升重要资源的显示速度和降低总体流量，对于移动web端常见的多tab页面，Webpack的<a href="https://webpack.js.org/guides/code-splitting/" target="_blank" rel="noopener">Code Splitting</a>帮助我们更加便捷实现按需加载。</p>
+<ul>
+<li>非首屏图片Lazyload<br>不用多说，在目前流量费用还算比较高昂的情况下，帮助用户节省更多的流量可以避免用户的投诉，为了保证页面内容最小化，加速页面渲染，尽可能节省首屏网络流量，页面中的图片资源推荐使用懒加载实现，在页面滚动时动态载入图片。</li>
+</ul>
+</li>
+</ul>
+<h4><span id="使用cdn">使用CDN</span></h4><p>CDN是将源站内容分发至最接近用户的节点，使用户可就近取得所需内容，提高用户访问的响应速度和成功率。解决因分布、带宽、服务器性能带来的访问延迟问题，适用于站点加速、点播、直播等场景。<br>对于web页面来说，将项目的js，css等静态资源存放在CDN是一个重要的优化手段，加入所有资源统一打包放在同一个域名下，很难达到用户就近获取的优势（目前最佳实践是html页面采用一个域名，静态资源文件采用CDN域名），所谓静态资源即是可以被浏览器缓存的资源，而对于html页面，由于是js和css等链接的入口，通常不采用缓存。常用的<a href="https://cn.aliyun.com/product/cdn" target="_blank" rel="noopener">阿里云CDN</a>和<a href="https://cloud.tencent.com/product/cdn-scd" target="_blank" rel="noopener">腾讯云CDN</a>都有开放接口，开发者可以按需选择。</p>
+<h4><span id="预加载">预加载</span></h4><p>此预加载主要分为两个部分，一种是采用原生浏览器支持的API来对页面的一些资源进行预先拉取或者加载，另一种是通过自己写逻辑来加载一些重要的资源，立即下面内容的前提是要立即目前移动web常见的hybrid架构，webview外壳+H5页面：<br><img src="//img.mukewang.com/5c7779240001ae7004170297.png" alt="图片描述"></p>
+<ul>
+<li><p>DNS预解析（dns-prefetch）<br>DNS 作为互联网的基础协议，其解析的速度似乎很容易被网站优化人员忽视。现在大多数新浏览器已经针对DNS解析进行了优化，典型的一次DNS解析需要耗费 20-120 毫秒，减少DNS解析时间和次数是个很好的优化方式。DNS Prefetching 是让具有此属性的域名不需要用户点击链接就在后台解析，而域名解析和内容载入是串行的网络操作，所以这个方式能 减少用户的等待时间，提升用户体验 。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"dns-prefetch"</span> <span class="attr">href</span>=<span class="string">"//haitao.nos.netease.com"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Preload 和 Prefetch<br>两者都是以<code>&lt;link rel=&quot;preload&quot;&gt; 和 &lt;link rel=&quot;prefetch&quot;&gt;</code>作为引入方式。<br><strong>Preload</strong> 一个基本的用法是提前加载资源,告诉浏览器预先请求当前页需要的资源，从而提高这些资源的请求优先级，加载但是不运行，占用浏览器对同一个域名的并发数:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"preload"</span> <span class="attr">href</span>=<span class="string">"a.js"</span> <span class="attr">as</span>=<span class="string">"script"</span> <span class="attr">onload</span>=<span class="string">"preloadLoad()"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Prefetch</strong> 一个一本用法是浏览器会在空闲的时候，下载资源, 并缓存起来。当有页面使用的时候，直接从缓存中读取。其实就是把决定是否和什么时间加载这个资源的决定权交给浏览器。</p>
+   <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"prefetch"</span> <span class="attr">href</span>=<span class="string">"a.js"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>遗憾的是对于这两个接口，移动端的浏览器支持性很不好，这也是没有普遍推广开勇的原因。<img src="//img.mukewang.com/5c773be00001940412540467.png" alt="图片描述"><br><img src="//img.mukewang.com/5c773f550001ffa512560418.png" alt="图片描述"><br><img src="//img.mukewang.com/5c773f610001c4a412590485.png" alt="图片描述"><br>什么时候使用Preload，什么时候使用Prefetch可以总结如下：<br><em>对于当前页面很有必要的资源使用 preload，对于可能在将来的页面中使用的资源使用 prefetch。</em><br>关于Preload 和 Prefetch可以<a href="https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/" target="_blank" rel="noopener">参考这里</a>,另外还有<a href="https://css-tricks.com/prefetching-preloading-prebrowsing/" target="_blank" rel="noopener">Prerender</a>，<a href="https://css-tricks.com/prefetching-preloading-prebrowsing/" target="_blank" rel="noopener">subresource</a>，<a href="https://css-tricks.com/prefetching-preloading-prebrowsing/" target="_blank" rel="noopener">Preconnect</a>属性，由于目前能支持到这些属性的机型太少，这里就不在赘述了。</p>
+</li>
+<li><p>业务逻辑的预加载<br>关于业务逻辑的预加载，在这里我可以举一个微信小程序的例子。小程序主要分为渲染层和逻辑层，逻辑层有iOS或者Android的<strong>JavaScript core</strong>来运行，渲染层由各自的<strong>webview</strong>组件负责渲染。我们用户实际体验到的UI还是跑在我们的webview里面，这个和大多数H5页面的渲染用的是一个组件。但是为什么我们体验小程序会比H5页面要快很多？尤其是新开页面时？<br><img src="//img.mukewang.com/5c7747e50001ad1523561746.png" alt="图片描述"><br><em>小程序在启动时，会预先加载所有页面逻辑代码进内存，在 a页面跳转至 b页面 时，可以在内存中直接运行而无需在发送资源请求，a页面的逻辑代码 Javascript 数据也不会从内存中消失。b页面甚至可以直接访问 a页面中的数据，整个坏境在一个大的上下文中。</em><br>当然这里你可能会有疑问？假如用户不会进入page2，那加载page2的逻辑代码岂不是浪费？这里就会牵扯到一个用户行为预测的问题，在小程序的架构中，整个逻辑代码是统一在一个包里，微信是统一将这些文件下载并加载到内存中，这可能会涉及到一些浪费，但是对于提速来讲收益大于弊端的。当然小程序页提供出<a href="https://developers.weixin.qq.com/ebook?action=get_post_info&amp;docid=000c8a2f9ac0b0ab0086aafeb5d80a" target="_blank" rel="noopener">分包策略</a>来优化这些问题。<br>借助小程序的思路，我们的移动web同样适用这种预加载优化逻辑：</p>
+<ol>
+<li><strong>预加载资源</strong>：在多tab的单页应用中，我们可以在用户打开首屏之后，预先加载其他tab的资源。例如用户进入时在推荐tab，这时就可以预先加载订单，我的 这两个tab的资源了，当用户点击订单时，页面的展现就会快一些。<img src="//img.mukewang.com/5c774c9c0001f0a302230278.png" alt="图片描述"></li>
+<li><strong>预加载数据</strong>：预加载数据的时机最好是在空闲时，什么是空闲时呢？我们分析一下打开一个H5页面的流程：<img src="//img.mukewang.com/5c7772200001633505590182.png" alt="图片描述"><br>从图上可以看到，利用闲时可以做的事情有很多，预加载数据是一个典型的优化手段，提前把新页面所需要的数据加载好，在新页面打开后，可以直接用数据来进行渲染，当然这里涉及到的跨页面数据通信，我们可以利用localStroage来实现。</li>
+<li><strong>预加载webview</strong><br>我利用闲时来做更多事情的前提是闲时够长，但这本书也不是一个很好的现象，尽量的减少闲时，也是我们需要做的一项优化，例如我们来减少webview的加载时间，这就需要提前加载webview，此项优化大多是由native端来完成：</li>
+</ol>
+<ul>
+<li>在APP启动后，就提前在内存中将webview加载好，而不是等到点击进入web页面时才去加载。</li>
+<li>创建一个webview的复用池，例如最多只存在3个webview，每次从池子里获取webview，达到复用的目的。<h3><span id="3合理利用缓存">3.合理利用缓存</span></h3>上文说了浏览器缓存的基础知识，既然是基础，那就说明必须掌握，下面来说一些进阶篇的利用缓存来优化页面：<h4><span id="妙用localstorage">妙用localStorage</span></h4>HTML5 LocalStorage可以看做是加强版的cookie，数据存储大小提升，有更好的弹性以及架构，可以将数据写入到本机的ROM中，还可以在关闭浏览器后再次打开时恢复数据，以减少网络流量，日常使用localStorage来优化我们的页面大概有以下几种场景：</li>
+</ul>
+</li>
+<li>缓存一些非实时更新的变量，例如某些闪屏的标志位信息，地理位置信息等等，取用方便，即存即用。</li>
+<li>使用localStorage缓存Js和css文的，为了提升页面的打开速度，或者是页面可以离线使用，有些页面会采用将静态资源文件直接缓存在localStorage中，当页面打开时将内容读取出并运行，使用此方法确实可以减少http请求，提速页面。</li>
+<li>在一些跨webview通信的场景中，localStorage是兼容性最好的数据通信方案，例如预加载的数据可以缓存在localStorage中，来实现各个页面的webview数据共享。</li>
+<li>需要注意的是，localStorage并不是无限大的，针对每个域名，PC端浏览器给localStorage分配的容量大概4.5m-5m，移动端类似微信等等的浏览器大概容量是2.5m-3m<a href="http://dev-test.nemikor.com/web-storage/support-test/" target="_blank" rel="noopener">参考这里</a>。所以在使用时需要做好异常捕获，让localstorage超出容量时，是无法在进行插入并报错，如果对容量有更高的要求，可以参考使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API" target="_blank" rel="noopener">indexeddb</a>。需要注意的是indexeddb的兼容性却不是很好，android4.4之前以及iOS7以前都无法使用。<h4><span id="老生常谈离线包">老生常谈离线包</span></h4>离线包技术可以说是并不算很新的技术了，各个业务都有在使用，也都有自己的一套hybrid离线包系统，关键点在于离线包的打包，同时对文件加密/签名，更新离线包(增量)<br>，安全教研以及容错机制等等，在这里列举一些大厂的离线包方案来参考：</li>
+<li>美团：<a href="https://tech.meituan.com/2017/07/06/lsloader.html" target="_blank" rel="noopener">LsLoader——通用移动端WebApp离线化方案</a>。</li>
+<li>腾讯：<a href="http://www.alloyteam.com/2013/12/web-cache-6-hybrid-app-tailored-cache/" target="_blank" rel="noopener">手Q离线包Alloykit</a>。</li>
+<li>阿里：<a href="https://yq.aliyun.com/articles/2939" target="_blank" rel="noopener">极致的 Hybrid：航旅离线包再加速</a></li>
+</ul>
+<h4><span id="service-worker探索">Service Worker探索</span></h4><p>提到缓存，那就不得不提近几年比较火的Service Worker了：<br><img src="//img.mukewang.com/5c778bc9000139b107760495.png" alt="图片描述"><br>作为一个比较新的技术，大家可以把 Service Worker 理解为一个介于客户端和服务器之间的一个代理服务器。在 Service Worker 中我们可以做很多事情，比如拦截客户端的请求、向客户端发送消息、向服务器发起请求等等，其中最重要的作用之一就是离线资源缓存。<br>Service Worker的主要复杂点在于不断地对缓存策略的调整，笔者在这里就不过多展开，可以参考一下淘宝<a href="http://taobaofed.org/blog/2018/08/08/workbox3/" target="_blank" rel="noopener">Service worker实战</a>。</p>
+<h3><span id="4nodejs服务端渲染ssr优化首屏时间">4.Nodejs服务端渲染（SSR）优化首屏时间</span></h3><p>在前后端分离之后，后端语言的模板功能被弱化，整个页面的渲染基本上都由前端 js 动态渲染，但这样对于一些应用来说是有缺陷的。比如需要 SEO 的，需要打开页面不用等待就能看到页面的，另外前端页面展示过度依赖js和css逻辑执行，在极端情况或者网络较差，手机性能低下(尤其在低端Android机型较为明显)时，白屏时间较长，这时服务端渲染便应用而生，至于为什么是Nodejs，作为一个前端，难道还要用Java么。。？<br><strong>为什么会有服务端渲染？</strong><br>如果你说服务端渲染和早期web框架，例如SSH，JSP servlet，PHP等等一样的话，那我只能说呵呵，目前的服务端渲染和早期的框架是有本质区别的：</p>
+<ul>
+<li><em>Web 2.0时代最大的思想革命本质不是前后端分离，而是把网页当作独立的应用程序（app）</em>。建立在前后端分离的基础上，后端只负责提供数据json格式，前端还是负责页面交互逻辑，大多数的服务端渲染采用Nodejs层来进行数据组装，html拼接。</li>
+<li>重点在首屏！！首屏时间的优化，移动互联网时代的爆发，用户对网页性能的要求越来越高，但毕竟基于3G，4G网络，让用户更快的看到页面就能挽留更多的潜在商机。服务端只负责首屏的页面渲染，真正过了首屏，大多数的业务逻辑，页面交互，还是需要有单独的前端来实现的。</li>
+</ul>
+<p><strong>如何实现？</strong><br>如果你的项目用的是React或者是vue，那么下面两个现场的开源框架是不错的选择。</p>
+<ul>
+<li>next.js: 服务器端渲染 react 组件框架，参考查看<a href="https://segmentfault.com/a/1190000015578803" target="_blank" rel="noopener">React服务端渲染指南</a>。</li>
+<li>nuxt.js: 服务器端渲染 vue 组件框架，参考查看 <a href="https://zh.nuxtjs.org/。" target="_blank" rel="noopener">https://zh.nuxtjs.org/。</a></li>
+<li>gatsbyjs:服务端React渲染框架，目前看比较新，网上的资料还不是很多，参考查看： <a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener">https://www.gatsbyjs.org/</a></li>
+</ul>
+<p>当然，你也可以自己实现一套自己的服务端渲染框架，一般需要关注这些问题：</p>
+<ul>
+<li>实现自定义的Node端的window上下文对象Cookie &amp; Session等。</li>
+<li>远程数据的获取，一般采用Nodejs的http模块。</li>
+<li>React采用ReactDOMServer调用renderToString(),Vue采用vue-server-renderer调用renderToString()。</li>
+<li>Node端内存泄露和控制等问题</li>
+</ul>
+<p><strong>代码同构(isomorphic)</strong><br>使用Nodejs的服务端渲染的一大优势就是代码同构，这使得一个项目可以分别部署成走线上正常前端渲染版本，和走服务端渲染版本，这样可以更好的做到容灾机制，当任何一种分之挂掉之后，可以直接走另一个版本，提高稳定性。这也同构的魅力所在！因为在同构直出宕掉的时候，还有前端渲染页面可以提供正常的服务。<br><img src="//img.mukewang.com/5c77aacc000107f406780266.png" alt="图片描述"></p>
+<p><strong>取舍</strong><br>虽然说服务端渲染这类优化确实可以提升一定的页面首屏时间，但是也是需要成本的，在前端开发接管了Node作为中间层时，需要额外的机器资源部署，并且一旦接触到后端，容灾机制，内存管理等性能指标都需要关注，这对于当前的业务系统架构可能需要有一定的调整，所以还是要斟酌来使用。</p>
+<h3><span id="5渲染优化">5.渲染优化</span></h3><p>终于回到我们前端的老本家了，如果说前面的优化都是在框架，逻辑层面的优化，或者是参考后端，客户端的优化思路，那么真正涉及到UI渲染的优化才是我们作为前端工程师的立身之本了。</p>
+<ul>
+<li><p><strong>何为渲染优化？</strong></p>
+<p>抛开首屏加速，真正让用户体验web页面的另一个很重要的部分就是用户行为交互了，这包括用户的<strong>点击相应</strong>，<strong>滚动流畅度</strong>，<strong>动画是否卡顿</strong>流畅度等等，这些关于用户交互性的优化在已往的PC端可能不是很被重视，因为PC浏览器的性能要远远大于手机端，但是到了移动web就不一样了，用户都希望移动web能有PC端一样的性能。</p>
+</li>
+<li><p><strong>为什么同样的页面在iPhone里总比Android流畅？</strong></p>
+<p>目前主流的Android硬件配置可以说是甩iPhone几条街了，那为什么高配置却得不到好的体验呢？关键两类机型的操作系统上的优化程度，其中一个原因就是iOS操作系统采用执行率较高的Object-c语言，大部分硬件接口可以直接调用和运行，而Android则采用Java语言，因为虚拟机的存在，虽然跨平台性提升了，但是通过虚拟机在和系统硬件交互，执行效率就低了很多，当然这只是其中一个原因。那么，我们移动web主要优化的群体就是Android机型了。</p>
+</li>
+<li><p><strong><strong>16ms优化</strong></strong></p>
+<p>目前大多数设备的屏幕刷新频率为60次/秒，每一帧所消耗的时间约为16ms（1000 ms / 60 = 16.66ms），这16ms就是渲染帧的时长，所谓渲染帧是指浏览器一次完整绘制过程，帧之间的时间间隔是DOM视图更新的最小间隔，但实际上，浏览器还有一些整理工作要做，因此开发者所做的所有工作需要在10ms内完成。<br>如果不能完成，帧率将会下降，网页会在屏幕上抖动，也就是通常所说的卡顿，这会对用户体验产生严重的负面影响。所以如果一个页面中有动画效果或者用户正在滚动页面，那么浏览器渲染动画或页面的速率也要尽可能地与设备屏幕的刷新频率保持一致，以保证良好的用户体验。在这一个间隔内，浏览器可能需要做以下事情：</p>
+<ul>
+<li>脚本执行（JavaScript）：脚本造成了需要重绘的改动，比如增删 DOM、请求动画等</li>
+<li>样式计算（CSS Object Model）：级联地生成每个节点的生效样式。</li>
+<li>布局（Layout）：计算布局，执行渲染算法</li>
+<li>重绘（Paint）：各层分别进行绘制（比如 3D 动画）</li>
+<li>合成（Composite）：合成各层的渲染结果</li>
+</ul>
+</li>
+<li><p><strong>重绘和重排</strong><br>在上面浏览器需要做的这些事情中，会引发不同程度的重绘和重排，而重绘和重排正式影响流畅的重要因素：</p>
+<ol>
+<li><p>部分渲染树（或者整个渲染树）需要重新分析并且节点尺寸需要重新计算，这被称为重排。</p>
+</li>
+<li><p>由于节点的几何属性发生改变或者由于样式发生改变，例如改变元素背景色时，屏幕上的部分内容需要更新，这样的更新被称为重绘。</p>
+</li>
+</ol>
+<p>重排和重绘代价是高昂的，它们会破坏用户体验，并且让UI展示非常迟缓，但是每次重排，必然会导致重绘，而每次重绘并不一定会发生重排，我们需要在以下几种场景来减少重排的发生：<br>当页面布局和几何属性改变时就需要回流。下述情况会发生浏览器回流：</p>
+<ol>
+<li>添加或者删除可见的DOM元素。</li>
+<li>元素位置改变。</li>
+<li>元素尺寸改变——边距、填充、边框、宽度和高度。</li>
+<li>内容改变——比如文本改变或者图片大小改变而引起的计算值宽度和高度改变。</li>
+<li>页面渲染初始化。</li>
+<li>浏览器窗口尺寸改变——resize事件发生时。</li>
+</ol>
+</li>
+<li><p><strong>使用 requestAnimationFrame</strong><br>提升动画流畅度的另一个重要因素是让浏览器变得智能起来，好在浏览器给我们提供了这个接口requestAnimationFrame，通过这个API,可以告诉浏览器某个JavaScript代码要执行动画，浏览器收到通知后，则会运行这些代码的时候进行优化，它会确保JS尽早在每一帧的开始执行，实现流畅的效果，而不再需要开发人员烦心刷新频率的问题了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">animationWidth</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> div = <span class="built_in">document</span>.getElementById(<span class="string">'box'</span>);</span><br><span class="line">  div.style.width = <span class="built_in">parseInt</span>(div.style.width) + <span class="number">1</span> + <span class="string">'px'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">parseInt</span>(div.style.width) &lt; <span class="number">200</span>) &#123;</span><br><span class="line">    requestAnimationFrame(animationWidth)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">requestAnimationFrame(animationWidth);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>试试requestIdleCallback</strong><br>requestIdleCallback的出现伴随着React 16 的Fiber特性，他的使用场景是当用户在做负责交互时，不希望因为一些不重要的任务（如统计上报）导致用户感觉到卡顿的话，就应该考虑使用了，因为requestIdleCallback回调的执行的前提条件是当前浏览器处于空闲状态，但是需要注意的是不要在requestIdleCallback操作任何DOM，这违背了这个接口的设计原则。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> requestIdelCallback(myNonEssentialWork);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myNonEssentialWork</span> (<span class="params">deadline</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// deadline.timeRemaining()可以获取到当前帧剩余时间</span></span><br><span class="line">  <span class="keyword">while</span> (deadline.timeRemaining() &gt; <span class="number">0</span> &amp;&amp; tasks.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    doWorkIfNeeded();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (tasks.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">    requestIdleCallback(myNonEssentialWork);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p><strong>fragment元素的应用</strong><br>在你使用dominnerHTML方法来插入大量dom节点时，不妨试试fragment，fragment文档片段是个轻量级的document对象，它的设计初衷就是为了完成这类任务——更新和移动节点。文档片段的一个便利的语法特性是当你附加一个片断到节点时，实际上被添加的是该片断的子节点，而不是片断本身。只触发了一次重排，而且只访问了一次实时的DOM。</p>
+</li>
+<li><p><strong>列表滚动优化</strong><br>长列表滚动在移动端是一种非常常见的交互模式，例如feeds流，图片流等等，这些列表的滚动流畅度优化对用户体验的提升是非常重要的，基于目前的优化思路，借助dom复用的方案，类似iOS的UITableView或者Android的recyclerview原理，在列表滚动时，只保证视窗区域内的dom节点存在，在有限的dom节点内实现滚动，而不在创建新的节点，在用户不断下拉翻页的过程中，保证整个页面有限的dom元素来减少内存的消耗，原理如下图：<br><img src="//img.mukewang.com/5c78e94900013bc502610519.png" alt="图片描述"><br>复用的dom：<br><img src="//img.mukewang.com/5c78e95b000190de01830324.png" alt="图片描述"><br>采用这一个方案的前端是借助浏览器的onscroll事件来做逻辑处理，但是问题在于有些机型例如iOS的UIWebview下，onscroll不能实时触发，这就给优化带来了难题，由此引发出了模拟滚动:</p>
+</li>
+<li><p>正常的滚动：我们平时使用的scroll，包括上面讲的滚动都属于正常滚动，利用浏览器自身提供的滚动条来实现滚动，底层是由浏览器内核控制。</p>
+</li>
+<li><p>模拟滚动：最典型的例子就是iscroll了，原理一般有两种：</p>
+<ul>
+<li>1).监听滚动元素的touchmove事件，当事件触发时修改元素的transform属性来实现元素的位移，让手指离开时触发touchend事件，然后采用requestanimationframe来在一个线型函数下不断的修改元素的transform来实现手指离开时的一段惯性滚动距离。</li>
+<li>2).监听滚动元素的touchmove事件，当事件触发时修改元素的transform属性来实现元素的位移，让手指离开时触发touchend事件，然后给元素一个css的animation，并设置好duration和function来实现手指离开时的一段惯性距离。</li>
+</ul>
+<p>结论是如果要采用模拟滚动，可以解决onscroll不实时触发的问题，从而实现长列表的复用的优化，但是带来新的问题就是模拟滚动本身也是dom的重绘，增加额外的性能消耗，达到有优化效果并不理想，好在iOS的新版WKwebview解决了onscroll问题，让开发者有了更好的选择。</p>
+</li>
+<li><p><strong>滚动函数防抖</strong><br>当持续触发事件时，一定时间段内没有再触发事件，事件处理函数才会执行一次，如果设定的时间到来之前，又一次触发了事件，就重新开始延时。如下图，持续触发scroll事件时，并不执行handle函数，当1000毫秒内没有触发scroll事件时，才会延时触发scroll事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">fn, wait</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> timeout = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(timeout !== <span class="literal">null</span>) </span><br><span class="line">                clearTimeout(timeout);</span><br><span class="line">        timeout = setTimeout(fn, wait);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">Math</span>.random()); </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 滚动事件</span></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>, debounce(handle, <span class="number">1000</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>合理使用GPU</strong><br>动画卡顿是在移动web开发时经常遇到的问题，解决这个问题一般会用到CSS3硬件加速。硬件加速这个名字感觉上很高大上，其实它做的事情可以简单概括为：通过GPU进行渲染，解放CPU，我们可以利用GPU的图形层，将负责的动画操作放在这个层，如何开启？</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">webkit-transform</span>: <span class="selector-tag">translateZ</span>(0);</span><br></pre></td></tr></table></figure>
+<p>强制把需要动画的dom的对象 ，放置在GPU的layout层来缓存从而达到任何移动，大小变化都在这个层。<br>通过开启GPU硬件加速虽然可以提升动画渲染性能或解决一些棘手问题，但使用仍需谨慎，使用前一定要进行严谨的测试，否则它反而会大量占用浏览网页用户的系统资源，尤其是在移动端，肆无忌惮的开启GPU硬件加速会导致大量消耗内存，千万不要<code>* {webkit-transform: translateZ(0);}</code>。</p>
+</li>
+</ul>
+<h3><span id="写在最后">写在最后</span></h3><p>本文在性能优化的基础上，将移动web的性能点逐步展开和深入，大部分属于结论性介绍内容，真正实践还是需要开发人员亲身尝试来得到优化提升，总之，<br><em>技术就是在于不断折腾，愿各位在踩坑的道路上一帆风顺！</em></p>
+
+      
+    </div>
+
+    <footer class="article-footer">
+      
+        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/795/" data-id="ckx0lwha0003qitnf9ewvh74i" class="article-share-link" data-share="baidu" data-title="移动web性能优化从入门到进阶">分享到</a>
+      
+
+      <a href="http://www.nihaoshijie.com.cn/index.php/archives/795/#ds-thread" class="article-comment-link"><span class="dot">•</span>
+      
+      
+      <a href="/index.php/archives/795/" class="article-date-l">
+  <time datetime="2019-03-01T08:06:08.000Z" itemprop="datePublished">2019-03-01</time>
+</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/性能优化/">性能优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/移动web/">移动web</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+  <!-- 云跟帖配置JavaScript 配置 去除于 20190402 
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    <script>
+    var cloudTieConfig = {
+      url: document.location.href.replace('https','').replace('http',''),
+      sourceId: "",
+      productKey: "eb0b276c0f00410db0322e1a9a9b8bbc",
+      target: "cloud-tie-wrapper"
+    };
+    var yunManualLoad = true;
+    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+    </script>-->
+
+
+
+  <!--搜狐畅言 PC和WAP自适应版 添加于20190402 删除于20200402-->
+<div id="SOHUCS" sid="ckx0lwha0003qitnf9ewvh74i" ></div> 
+<script type="text/javascript"> 
+/*(function(){ 
+var appid = 'cyuabuJwF'; 
+var conf = 'prod_2da707f8ba1b3103d72ef0b575e52e20'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); */</script>
+
+</section>
+      
+      <aside id="sidebar">
+
+  <div class="widget-wrap">
+    
+    <div class="widget info">
+
+      <img class="avatar" src="https://wx4.sinaimg.cn/mw690/808a542aly1giwdawiinbj20cs0cs0uv.jpg"/>
+      <h3 class="nick-name">吕小鸣</h3>
+      <p class="desc">实践过，才懂得</p>
+      <div class="post-info">
+        <div class="info-inner">
+          <div class="info-num">53</div>
+          <div class="info-name">文章</div>
+        </div>
+        <div class="info-inner">
+          <div class="info-num">43</div>
+          <div class="info-name">分类</div>
+        </div>
+        <div class="info-inner">
+          <div class="info-num">61</div>
+          <div class="info-name">标签</div>
+        </div>
+      </div>
+      <div class="info-links">
+        <a class="info-link github" href="https://github.com/lvming6816077" target="_blank" title="GitHub">
+        <i class="github"></i>
+          GitHub
+        </a>
+        <a class="info-link weibo" href="http://weibo.com/lvming6816077/home?wvr=5&topnav=1&mod=logo" target="_blank" title="GitHub">
+        <i class="weibo"></i>
+          WeiBo
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <img style="width:100%;" src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fd1ebc6f88746c390d6b87d766018d4~tplv-k3u1fbpfcp-zoom-1.image" />
+    </div>
+    
+  </div>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <img style="width:100%;" src="https://qiniu.nihaoshijie.com.cn/qunmingp.jpg" />
+    </div>
+
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget">
+    <h3 class="widget-title-l">近期文章</h3>
+      <ul>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/913/">Vue3源码解析--目录结构</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/1914/">Vue.js Composition API</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/1201/">Vite与Vue Cli</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/916/">Vue3源码解析--虚拟DOM</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/914/">Vue3源码解析--响应式原理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title-l">归档</h3>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <h3 class="widget-title-l">标签</h3>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B端系统/">B端系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Composition-API/">Composition API</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5游戏/">HTML5游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWA/">PWA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React全家桶/">React全家桶</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vite/">Vite</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-Cli/">Vue Cli</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-js/">Vue.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue3/">Vue3</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bdshare/">bdshare</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/canvas/">canvas</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome插件/">chrome插件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css动画/">css动画</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http2/">http2</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react16-升级/">react16 升级</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react全家桶/">react全家桶</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rem/">rem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/requirejs/">requirejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svg/">svg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vmin/">vmin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue3/">vue3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack2/">webpack2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress/">wordpress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/下拉刷新/">下拉刷新</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/专栏/">专栏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二叉树遍历/">二叉树遍历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/全屏滚动/">全屏滚动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/升级/">升级</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搬家/">博客搬家</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回文串/">回文串</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微前端/">微前端</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能优化/">性能优化</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手势解锁/">手势解锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构师/">架构师</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器/">浏览器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解析/">源码解析</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动/">滚动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/点赞/">点赞</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/离线存储/">离线存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/移动web/">移动web</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/移动web适配/">移动web适配</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/背包问题/">背包问题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/视频直播/">视频直播</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/迷宫问题/">迷宫问题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置指南/">配置指南</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget tagcloud">
+      <h3 class="widget-title-l">标签云</h3>
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/B端系统/" style="font-size: 10px;">B端系统</a> <a href="/tags/Composition-API/" style="font-size: 10px;">Composition API</a> <a href="/tags/HTML5/" style="font-size: 16px;">HTML5</a> <a href="/tags/HTML5游戏/" style="font-size: 10px;">HTML5游戏</a> <a href="/tags/PWA/" style="font-size: 10px;">PWA</a> <a href="/tags/React-Native/" style="font-size: 14px;">React Native</a> <a href="/tags/React全家桶/" style="font-size: 10px;">React全家桶</a> <a href="/tags/Vite/" style="font-size: 10px;">Vite</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Vue-Cli/" style="font-size: 10px;">Vue Cli</a> <a href="/tags/Vue-js/" style="font-size: 12px;">Vue.js</a> <a href="/tags/Vue3/" style="font-size: 18px;">Vue3</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/bdshare/" style="font-size: 10px;">bdshare</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/chrome插件/" style="font-size: 12px;">chrome插件</a> <a href="/tags/css动画/" style="font-size: 10px;">css动画</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/http2/" style="font-size: 14px;">http2</a> <a href="/tags/https/" style="font-size: 12px;">https</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/react16-升级/" style="font-size: 10px;">react16 升级</a> <a href="/tags/react全家桶/" style="font-size: 10px;">react全家桶</a> <a href="/tags/rem/" style="font-size: 10px;">rem</a> <a href="/tags/requirejs/" style="font-size: 12px;">requirejs</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/vmin/" style="font-size: 10px;">vmin</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack2/" style="font-size: 10px;">webpack2</a> <a href="/tags/wordpress/" style="font-size: 10px;">wordpress</a> <a href="/tags/下拉刷新/" style="font-size: 10px;">下拉刷新</a> <a href="/tags/专栏/" style="font-size: 10px;">专栏</a> <a href="/tags/二叉树遍历/" style="font-size: 10px;">二叉树遍历</a> <a href="/tags/全屏滚动/" style="font-size: 10px;">全屏滚动</a> <a href="/tags/前端/" style="font-size: 12px;">前端</a> <a href="/tags/升级/" style="font-size: 10px;">升级</a> <a href="/tags/博客搬家/" style="font-size: 10px;">博客搬家</a> <a href="/tags/回文串/" style="font-size: 10px;">回文串</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/微前端/" style="font-size: 10px;">微前端</a> <a href="/tags/性能优化/" style="font-size: 12px;">性能优化</a> <a href="/tags/手势解锁/" style="font-size: 10px;">手势解锁</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/架构师/" style="font-size: 10px;">架构师</a> <a href="/tags/浏览器/" style="font-size: 10px;">浏览器</a> <a href="/tags/源码解析/" style="font-size: 14px;">源码解析</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/滚动/" style="font-size: 10px;">滚动</a> <a href="/tags/点赞/" style="font-size: 10px;">点赞</a> <a href="/tags/离线存储/" style="font-size: 10px;">离线存储</a> <a href="/tags/移动web/" style="font-size: 20px;">移动web</a> <a href="/tags/移动web适配/" style="font-size: 10px;">移动web适配</a> <a href="/tags/算法/" style="font-size: 18px;">算法</a> <a href="/tags/背包问题/" style="font-size: 10px;">背包问题</a> <a href="/tags/视频直播/" style="font-size: 10px;">视频直播</a> <a href="/tags/迷宫问题/" style="font-size: 10px;">迷宫问题</a> <a href="/tags/配置指南/" style="font-size: 10px;">配置指南</a> <a href="/tags/面试/" style="font-size: 10px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <h3 class="widget-title-l">友情链接</h3>
+      <ul>
+        
+          <li>
+            <a href="http://blog.csdn.net/u012844719" target="_blank">csdn博客</a>
+          </li>
+        
+          <li>
+            <a href="http://www.dglives.com/" target="_blank">数字生活|前端</a>
+          </li>
+        
+          <li>
+            <a href="http://www.moonwen.com/" target="_blank">春熙路</a>
+          </li>
+        
+          <li>
+            <a href="http://makaiqian.com/" target="_blank">麻凯倩前端</a>
+          </li>
+        
+          <li>
+            <a href="http://jeffjade.com/" target="_blank">晚晴幽草轩</a>
+          </li>
+        
+          <li>
+            <a href="http://www.cnblogs.com/vajoy" target="_blank">Vajoy</a>
+          </li>
+        
+          <li>
+            <a href="https://www.u3xyz.com/" target="_blank">右三</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 吕小鸣的前端博客<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+    </div>
+    <div style="margin-left: 6px;font-size: 12px;">豫ICP备19009686号</div>
+  </div>
+  <div class="pwa-tips" id="pwaTips">吕小鸣的前端博客正在使用PWA，是否安装到桌面？<span id="closepwaTips" class="close">x</span></div>
+  <script type="text/javascript">
+        var dfdPrompt = null;
+        var clickTips = false;
+        var pwaTips = document.getElementById('pwaTips');
+        var closepwaTips = document.getElementById('closepwaTips');
+        window.addEventListener('beforeinstallprompt', function (e) {
+            if (clickTips) return;
+            // 存储事件
+            dfdPrompt = e;
+            // 显示按钮
+            pwaTips.style.display = 'block';
+            setTimeout(function(){
+                pwaTips.style.opacity = '1';
+            },100)
+            
+
+            // 阻止默认事件
+            e.preventDefault();
+            return false;
+        });
+        pwaTips.addEventListener('click', function (e) {
+            if (dfdPrompt == null || e.srcElement.classList.contains('close')) {
+                return;
+            }
+            // 通过按钮点击事件触发横幅显示
+            dfdPrompt.prompt();
+            // 监控用户的安装行为
+            dfdPrompt.userChoice.then(function (choiceResult) {
+                // alert(choiceResult.outcome);
+            });
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+            dfdPrompt = null;
+            clickTips = true;
+        });
+        closepwaTips.addEventListener('click', function (e) {
+
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+        });
+</script>
+</footer>
+  </div>
+  <nav style="display:none;" id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">文章归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于本站</a>
+  
+    <a href="/exercise" class="mobile-nav-link">练习</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+
+  
+
+</script>
+
+
+<script>
+window._bd_share_main?window._bd_share_is_recently_loaded=!0:(window._bd_share_is_recently_loaded=!1,window._bd_share_main={version:"2.0",jscfg:{domain:{staticUrl:"https://ss1.baidu.com/9rA4cT8aBw9FktbgoI7O1ygwehsv/"}}}),!window._bd_share_is_recently_loaded&&(window._bd_share_main.F=window._bd_share_main.F||function(e,t){function r(e,t){if(e instanceof Array){for(var n=0,r=e.length;n<r;n++)if(t.call(e[n],e[n],n)===!1)return}else for(var n in e)if(e.hasOwnProperty(n)&&t.call(e[n],e[n],n)===!1)return}function i(e,t){this.svnMod="",this.name=null,this.path=e,this.fn=null,this.exports={},this._loaded=!1,this._requiredStack=[],this._readyStack=[],i.cache[this.path]=this;if(t&&t.charAt(0)!=="."){var n=t.split(":");n.length>1?(this.svnMod=n[0],this.name=n[1]):this.name=t}this.svnMod||(this.svnMod=this.path.split("/js/")[0].substr(1)),this.type="js",this.getKey=function(){return this.svnMod+":"+this.name},this._info={}}function o(e,t){var n=t=="css",r=document.createElement(n?"link":"script");return r}function u(t,n,r,i){function c(){c.isCalled||(c.isCalled=!0,clearTimeout(l),r&&r())}var s=o(t,n);s.nodeName==="SCRIPT"?a(s,c):f(s,c);var l=setTimeout(function(){throw new Error("load "+n+" timeout : "+t)},e._loadScriptTimeout||1e4),h=document.getElementsByTagName("head")[0];n=="css"?(s.rel="stylesheet",s.href=t,h.appendChild(s)):(s.type="text/javascript",s.src=t,h.insertBefore(s,h.firstChild))}function a(e,t){e.onload=e.onerror=e.onreadystatechange=function(){if(/loaded|complete|undefined/.test(e.readyState)){e.onload=e.onerror=e.onreadystatechange=null;if(e.parentNode){e.parentNode.removeChild(e);try{if(e.clearAttributes)e.clearAttributes();else for(var n in e)delete e[n]}catch(r){}}e=undefined,t&&t()}}}function f(e,t){e.attachEvent?e.attachEvent("onload",t):setTimeout(function(){l(e,t)},0)}function l(e,t){if(t&&t.isCalled)return;var n,r=navigator.userAgent,i=~r.indexOf("AppleWebKit"),s=~r.indexOf("Opera");if(i||s)e.sheet&&(n=!0);else if(e.sheet)try{e.sheet.cssRules&&(n=!0)}catch(o){if(o.name==="SecurityError"||o.name==="NS_ERROR_DOM_SECURITY_ERR")n=!0}setTimeout(function(){n?t&&t():l(e,t)},1)}var n="api";e.each=r,i.currentPath="",i.loadedPaths={},i.loadingPaths={},i.cache={},i.paths={},i.handlers=[],i.moduleFileMap={},i.requiredPaths={},i.lazyLoadPaths={},i.services={},i.isPathsLoaded=function(e){var t=!0;return r(e,function(e){if(!(e in i.loadedPaths))return t=!1}),t},i.require=function(e,t){e.search(":")<0&&(t||(t=n,i.currentPath&&(t=i.currentPath.split("/js/")[0].substr(1))),e=t+":"+e);var r=i.get(e,i.currentPath);if(r.type=="css")return;if(r){if(!r._inited){r._inited=!0;var s,o=r.svnMod;if(s=r.fn.call(null,function(e){return i.require(e,o)},r.exports,new h(r.name,o)))r.exports=s}return r.exports}throw new Error('Module "'+e+'" not found!')},i.baseUrl=t?t[t.length-1]=="/"?t:t+"/":"/",i.getBasePath=function(e){var t,n;return(n=e.indexOf("/"))!==-1&&(t=e.slice(0,n)),t&&t in i.paths?i.paths[t]:i.baseUrl},i.getJsPath=function(t,r){if(t.charAt(0)==="."){r=r.replace(/\/[^\/]+\/[^\/]+$/,""),t.search("./")===0&&(t=t.substr(2));var s=0;t=t.replace(/^(\.\.\/)+/g,function(e){return s=e.length/3,""});while(s>0)r=r.substr(0,r.lastIndexOf("/")),s--;return r+"/"+t+"/"+t.substr(t.lastIndexOf("/")+1)+".js"}var o,u,a,f,l,c;if(t.search(":")>=0){var h=t.split(":");o=h[0],t=h[1]}else r&&(o=r.split("/")[1]);o=o||n;var p=/\.css(?:\?|$)/i.test(t);p&&e._useConfig&&i.moduleFileMap[o][t]&&(t=i.moduleFileMap[o][t]);var t=l=t,d=i.getBasePath(t);return(a=t.indexOf("/"))!==-1&&(u=t.slice(0,a),f=t.lastIndexOf("/"),l=t.slice(f+1)),u&&u in i.paths&&(t=t.slice(a+1)),c=d+o+"/js/"+t+".js",c},i.get=function(e,t){var n=i.getJsPath(e,t);return i.cache[n]?i.cache[n]:new i(n,e)},i.prototype={load:function(){i.loadingPaths[this.path]=!0;var t=this.svnMod||n,r=window._bd_share_main.jscfg.domain.staticUrl+"static/"+t+"/",o=this,u=/\.css(?:\?|$)/i.test(this.name);this.type=u?"css":"js";var a="/"+this.type+"/"+i.moduleFileMap[t][this.name];e._useConfig&&i.moduleFileMap[t][this.name]?r+=this.type+"/"+i.moduleFileMap[t][this.name]:r+=this.type+"/"+this.name+(u?"":".js");if(e._firstScreenCSS.indexOf(this.name)>0||e._useConfig&&a==e._firstScreenJS)o._loaded=!0,o.ready();else{var f=(new Date).getTime();s.create({src:r,type:this.type,loaded:function(){o._info.loadedTime=(new Date).getTime()-f,o.type=="css"&&(o._loaded=!0,o.ready())}})}},lazyLoad:function(){var e=this.name;if(i.lazyLoadPaths[this.getKey()])this.define(),delete i.lazyLoadPaths[this.getKey()];else{if(this.exist())return;i.requiredPaths[this.getKey()]=!0,this.load()}},ready:function(e,t){var n=t?this._requiredStack:this._readyStack;if(e)this._loaded?e():n.push(e);else{i.loadedPaths[this.path]=!0,delete i.loadingPaths[this.path],this._loaded=!0,i.currentPath=this.path;if(this._readyStack&&this._readyStack.length>0){this._inited=!0;var s,o=this.svnMod;this.fn&&(s=this.fn.call(null,function(e){return i.require(e,o)},this.exports,new h(this.name,o)))&&(this.exports=s),r(this._readyStack,function(e){e()}),delete this._readyStack}this._requiredStack&&this._requiredStack.length>0&&(r(this._requiredStack,function(e){e()}),delete this._requiredStack)}},define:function(){var e=this,t=this.deps,n=this.path,s=[];t||(t=this.getDependents()),t.length?(r(t,function(t){s.push(i.getJsPath(t,e.path))}),r(t,function(t){var n=i.get(t,e.path);n.ready(function(){i.isPathsLoaded(s)&&e.ready()},!0),n.lazyLoad()})):this.ready()},exist:function(){var e=this.path;return e in i.loadedPaths||e in i.loadingPaths},getDependents:function(){var e=this,t=this.fn.toString(),n=t.match(/function\s*\(([^,]*),/i),i=new RegExp("[^.]\\b"+n[1]+"\\(\\s*('|\")([^()\"']*)('|\")\\s*\\)","g"),s=t.match(i),o=[];return s&&r(s,function(e,t){o[t]=e.substr(n[1].length+3).slice(0,-2)}),o}};var s={create:function(e){var t=e.src;if(t in this._paths)return;this._paths[t]=!0,r(this._rules,function(e){t=e.call(null,t)}),u(t,e.type,e.loaded)},_paths:{},_rules:[],addPathRule:function(e){this._rules.push(e)}};e.version="1.0",e.use=function(e,t){typeof e=="string"&&(e=[e]);var n=[],s=[];r(e,function(e,t){s[t]=!1}),r(e,function(e,o){var u=i.get(e),a=u._loaded;u.ready(function(){var e=u.exports||{};e._INFO=u._info,e._INFO&&(e._INFO.isNew=!a),n[o]=e,s[o]=!0;var i=!0;r(s,function(e){if(e===!1)return i=!1}),t&&i&&t.apply(null,n)}),u.lazyLoad()})},e.module=function(e,t,n){var r=i.get(e);r.fn=t,r.deps=n,i.requiredPaths[r.getKey()]?r.define():i.lazyLoadPaths[r.getKey()]=!0},e.pathRule=function(e){s.addPathRule(e)},e._addPath=function(e,t){t.slice(-1)!=="/"&&(t+="/");if(e in i.paths)throw new Error(e+" has already in Module.paths");i.paths[e]=t};var c=n;e._setMod=function(e){c=e||n},e._fileMap=function(t,n){if(typeof t=="object")r(t,function(t,n){e._fileMap(n,t)});else{var s=c;typeof n=="string"&&(n=[n]),t=t.indexOf("js/")==1?t.substr(4):t,t=t.indexOf("css/")==1?t.substr(5):t;var o=i.moduleFileMap[s];o||(o={}),r(n,function(e){o[e]||(o[e]=t)}),i.moduleFileMap[s]=o}},e._eventMap={},e.call=function(t,n,r){var i=[];for(var s=2,o=arguments.length;s<o;s++)i.push(arguments[s]);e.use(t,function(e){var t=n.split(".");for(var r=0,s=t.length;r<s;r++)e=e[t[r]];e&&e.apply(this,i)})},e._setContext=function(e){typeof e=="object"&&r(e,function(e,t){h.prototype[t]=i.require(e)})},e._setContextMethod=function(e,t){h.prototype[e]=t};var h=function(e,t){this.modName=e,this.svnMod=t};return h.prototype={domain:window._bd_share_main.jscfg.domain,use:function(t,n){typeof t=="string"&&(t=[t]);for(var r=t.length-1;r>=0;r--)t[r]=this.svnMod+":"+t[r];e.use(t,n)}},e._Context=h,e.addLog=function(t,n){e.use("lib/log",function(e){e.defaultLog(t,n)})},e.fire=function(t,n,r){e.use("lib/mod_evt",function(e){e.fire(t,n,r)})},e._defService=function(e,t){if(e){var n=i.services[e];n=n||{},r(t,function(e,t){n[t]=e}),i.services[e]=n}},e.getService=function(t,n,r){var s=i.services[t];if(!s)throw new Error(t+" mod didn't define any services");var o=s[n];if(!o)throw new Error(t+" mod didn't provide service "+n);e.use(t+":"+o,r)},e}({})),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("base/min_tangram",function(e,t){var n={};n.each=function(e,t,n){var r,i,s,o=e.length;if("function"==typeof t)for(s=0;s<o;s++){i=e[s],r=t.call(n||e,s,i);if(r===!1)break}return e};var r=function(e,t){for(var n in t)t.hasOwnProperty(n)&&(e[n]=t[n]);return e};n.extend=function(){var e=arguments[0];for(var t=1,n=arguments.length;t<n;t++)r(e,arguments[t]);return e},n.domready=function(e,t){t=t||document;if(/complete/.test(t.readyState))e();else if(t.addEventListener)"interactive"==t.readyState?e():t.addEventListener("DOMContentLoaded",e,!1);else{var n=function(){n=new Function,e()};void function(){try{t.body.doScroll("left")}catch(e){return setTimeout(arguments.callee,10)}n()}(),t.attachEvent("onreadystatechange",function(){"complete"==t.readyState&&n()})}},n.isArray=function(e){return"[object Array]"==Object.prototype.toString.call(e)},t.T=n}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("base/class",function(e,t,n){var r=e("base/min_tangram").T;t.BaseClass=function(){var e=this,t={};e.on=function(e,n){var r=t[e];r||(r=t[e]=[]),r.push(n)},e.un=function(e,n){if(!e){t={};return}var i=t[e];i&&(n?r.each(i,function(e,t){if(t==n)return i.splice(e,1),!1}):t[e]=[])},e.fire=function(n,i){var s=t[n];s&&(i=i||{},r.each(s,function(t,n){i._result=n.call(e,r.extend({_ctx:{src:e}},i))}))}};var i={};i.create=function(e,n){return n=n||t.BaseClass,function(){n.apply(this,arguments);var i=r.extend({},this);e.apply(this,arguments),this._super=i}},t.Class=i}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("conf/const",function(e,t,n){t.CMD_ATTR="data-cmd",t.CONFIG_TAG_ATTR="data-tag",t.URLS={likeSetUrl:"http://like.baidu.com/set",commitUrl:"http://s.share.baidu.com/commit",jumpUrl:"http://s.share.baidu.com",mshareUrl:"http://s.share.baidu.com/mshare",emailUrl:"http://s.share.baidu.com/sendmail",nsClick:"http://nsclick.baidu.com/v.gif",backUrl:"http://s.share.baidu.com/back",shortUrl:"http://dwz.cn/v2cut.php"}}),!window._bd_share_is_recently_loaded&&function(){window._bd_share_main.F._setMod("api"),window._bd_share_main.F._fileMap({"/js/share.js?v=da893e3e.js":["conf/define","base/fis","base/tangrammin","base/class.js","conf/define.js","conf/const.js","config","share/api_base.js","view/view_base.js","start/router.js","component/comm_tools.js","trans/trans.js"],"/js/base/tangram.js?v=37768233.js":["base/tangram"],"/js/view/share_view.js?v=3ae6026d.js":["view/share_view"],"/js/view/slide_view.js?v=08373964.js":["view/slide_view"],"/js/view/like_view.js?v=df3e0eca.js":["view/like_view"],"/js/view/select_view.js?v=85fc7cec.js":["view/select_view"],"/js/trans/data.js?v=17af2bd2.js":["trans/data"],"/js/trans/logger.js?v=d16ec0e3.js":["trans/logger"],"/js/trans/trans_bdxc.js?v=7ac21555.js":["trans/trans_bdxc"],"/js/trans/trans_bdysc.js?v=fc21acaa.js":["trans/trans_bdysc"],"/js/trans/trans_weixin.js?v=080be124.js":["trans/trans_weixin"],"/js/share/combine_api.js?v=8d37a7b3.js":["share/combine_api"],"/js/share/like_api.js?v=d3693f0a.js":["share/like_api"],"/js/share/likeshare.js?v=e1f4fbf1.js":["share/likeshare"],"/js/share/share_api.js?v=226108fe.js":["share/share_api"],"/js/share/slide_api.js?v=ec14f516.js":["share/slide_api"],"/js/component/animate.js?v=5b737477.js":["component/animate"],"/js/component/anticheat.js?v=44b9b245.js":["component/anticheat"],"/js/component/partners.js?v=911c4302.js":["component/partners"],"/js/component/pop_base.js?v=36f92e70.js":["component/pop_base"],"/js/component/pop_dialog.js?v=d479767d.js":["component/pop_dialog"],"/js/component/pop_popup.js?v=4387b4e1.js":["component/pop_popup"],"/js/component/pop_popup_slide.js?v=b16a1f10.js":["component/pop_popup_slide"],"/js/component/qrcode.js?v=d69754a9.js":["component/qrcode"],"/css/share_style0_16.css?v=6aba13f0.css":["share_style0_16.css"],"/css/share_style0_32.css?v=4413acf0.css":["share_style0_32.css"],"/css/share_style2.css?v=611d4f74.css":["share_style2.css"],"/css/share_style4.css?v=cef2b8f3.css":["share_style4.css"],"/css/slide_share.css?v=9c50d088.css":["slide_share.css"],"/css/share_popup.css?v=240f357d.css":["share_popup.css"],"/css/like.css?v=d52a0ea5.css":["like.css"],"/css/imgshare.css?v=a7830602.css":["imgshare.css"],"/css/select_share.css?v=15f56735.css":["select_share.css"],"/css/weixin_popup.css?v=1a56666e.css":["weixin_popup.css"]}),window._bd_share_main.F._loadScriptTimeout=15e3,window._bd_share_main.F._useConfig=!0,window._bd_share_main.F._firstScreenCSS="",window._bd_share_main.F._firstScreenJS=""}(),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.use("base/min_tangram",function(e){function n(e,t,n){var r=new e(n);r.setView(new t(n)),r.init(),n&&n._handleId&&(_bd_share_main.api=_bd_share_main.api||{},_bd_share_main.api[n._handleId]=r)}function r(e,r){window._bd_share_main.F.use(e,function(e,i){t.isArray(r)?t.each(r,function(t,r){n(e.Api,i.View,r)}):n(e.Api,i.View,r)})}function i(e){var n=e.common||window._bd_share_config&&_bd_share_config.common||{},r={like:{type:"like"},share:{type:"share",bdStyle:0,bdMini:2,bdSign:"on"},slide:{type:"slide",bdStyle:"1",bdMini:2,bdImg:0,bdPos:"right",bdTop:100,bdSign:"on"},image:{viewType:"list",viewStyle:"0",viewPos:"top",viewColor:"black",viewSize:"16",viewList:["qzone","tsina","huaban","tqq","renren"]},selectShare:{type:"select",bdStyle:0,bdMini:2,bdSign:"on"}},i={share:{__cmd:"",__buttonType:"",__type:"",__element:null},slide:{__cmd:"",__buttonType:"",__type:"",__element:null},image:{__cmd:"",__buttonType:"",__type:"",__element:null}};return t.each(["like","share","slide","image","selectShare"],function(s,o){e[o]&&(t.isArray(e[o])&&e[o].length>0?t.each(e[o],function(s,u){e[o][s]=t.extend({},r[o],n,u,i[o])}):e[o]=t.extend({},r[o],n,e[o],i[o]))}),e}var t=e.T;_bd_share_main.init=function(e){e=e||window._bd_share_config||{share:{}};if(e){var t=i(e);t.like&&r(["share/like_api","view/like_view"],t.like),t.share&&r(["share/share_api","view/share_view"],t.share),t.slide&&r(["share/slide_api","view/slide_view"],t.slide),t.selectShare&&r(["share/select_api","view/select_view"],t.selectShare),t.image&&r(["share/image_api","view/image_view"],t.image)}},window._bd_share_main._LogPoolV2=[],window._bd_share_main.n1=(new Date).getTime(),t.domready(function(){window._bd_share_main.n2=(new Date).getTime()+1e3,_bd_share_main.init(),setTimeout(function(){window._bd_share_main.F.use("trans/logger",function(e){e.nsClick(),e.back(),e.duration()})},3e3)})}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("component/comm_tools",function(e,t){var n=function(){var e=window.location||document.location||{};return e.href||""},r=function(e,t){var n=e.length,r="";for(var i=1;i<=t;i++){var s=Math.floor(n*Math.random());r+=e.charAt(s)}return r},i=function(){var e=(+(new Date)).toString(36),t=r("0123456789abcdefghijklmnopqrstuvwxyz",3);return e+t};t.getLinkId=i,t.getPageUrl=n}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("trans/trans",function(e,t){var n=e("component/comm_tools"),r=e("conf/const").URLS,i=function(){window._bd_share_main.F.use("base/tangram",function(e){var t=e.T;t.cookie.get("bdshare_firstime")==null&&t.cookie.set("bdshare_firstime",new Date*1,{path:"/",expires:(new Date).setFullYear(2022)-new Date})})},s=function(e){var t=e.bdUrl||n.getPageUrl();return t=t.replace(/\'/g,"%27").replace(/\"/g,"%22"),t},o=function(e){var t=(new Date).getTime()+3e3,r={click:1,url:s(e),uid:e.bdUid||"0",to:e.__cmd,type:"text",pic:e.bdPic||"",title:(e.bdText||document.title).substr(0,300),key:(e.bdSnsKey||{})[e.__cmd]||"",desc:e.bdDesc||"",comment:e.bdComment||"",relateUid:e.bdWbuid||"",searchPic:e.bdSearchPic||0,sign:e.bdSign||"on",l:window._bd_share_main.n1.toString(32)+window._bd_share_main.n2.toString(32)+t.toString(32),linkid:n.getLinkId(),firstime:a("bdshare_firstime")||""};switch(e.__cmd){case"copy":l(r);break;case"print":c();break;case"bdxc":h();break;case"bdysc":p(r);break;case"weixin":d(r);break;default:u(e,r)}window._bd_share_main.F.use("trans/logger",function(t){t.commit(e,r)})},u=function(e,t){var n=r.jumpUrl;e.__cmd=="mshare"?n=r.mshareUrl:e.__cmd=="mail"&&(n=r.emailUrl);var i=n+"?"+f(t);window.open(i)},a=function(e){if(e){var t=new RegExp("(^| )"+e+"=([^;]*)(;|$)"),n=t.exec(document.cookie);if(n)return decodeURIComponent(n[2]||null)}},f=function(e){var t=[];for(var n in e)t.push(encodeURIComponent(n)+"="+encodeURIComponent(e[n]));return t.join("&").replace(/%20/g,"+")},l=function(e){window._bd_share_main.F.use("base/tangram",function(t){var r=t.T;r.browser.ie?(window.clipboardData.setData("text",document.title+" "+(e.bdUrl||n.getPageUrl())),alert("\u6807\u9898\u548c\u94fe\u63a5\u590d\u5236\u6210\u529f\uff0c\u60a8\u53ef\u4ee5\u63a8\u8350\u7ed9QQ/MSN\u4e0a\u7684\u597d\u53cb\u4e86\uff01")):window.prompt("\u60a8\u4f7f\u7528\u7684\u662f\u975eIE\u6838\u5fc3\u6d4f\u89c8\u5668\uff0c\u8bf7\u6309\u4e0b Ctrl+C \u590d\u5236\u4ee3\u7801\u5230\u526a\u8d34\u677f",document.title+" "+(e.bdUrl||n.getPageUrl()))})},c=function(){window.print()},h=function(){window._bd_share_main.F.use("trans/trans_bdxc",function(e){e&&e.run()})},p=function(e){window._bd_share_main.F.use("trans/trans_bdysc",function(t){t&&t.run(e)})},d=function(e){window._bd_share_main.F.use("trans/trans_weixin",function(t){t&&t.run(e)})},v=function(e){o(e)};t.run=v,i()});
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1.10.2_d88366fd.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-min-1.2.1.js"></script>
+<script>AV.init({appId:"yqwM1H3ohsqaUqxBa2balXfY-gzGzoHsz", appKey:"gE3VrJwiTB3lfORQlaUvi2RO"});</script>
+<script>
+  var fakeCount = 500;
+function showCount (Counter){
+  var query=new AV.Query(Counter);
+
+  query.find({
+    success: function(results){
+
+            for(var i=0;i<results.length;i++)    
+            {
+                var counter=results[i];
+                var url=counter.get("url");
+                var time=counter.get("time");
+
+                try {
+                  $('#'+url+'learnCount').text(parseInt(time)+fakeCount);
+                }catch(e){}
+                
+            }
+        },
+    error: function(error){
+        console.log(error);
+        // alert("Error:"+error.code+" "+error.message);
+    }
+  });
+}
+function addCount (Counter) {
+    
+    var url=window.location.pathname.replace(/\//g,'').replace('.','').trim();
+    var title = $('.article-title').text().trim();
+    var query=new AV.Query(Counter);
+
+    query.equalTo("url",url);
+    query.find({
+        success: function(results){
+            if(results.length>0)
+            {
+
+                var counter=results[0];
+
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+
+                counter.save();
+
+                $('#'+url+'learnCount').text(parseInt(counter.get("time"))+fakeCount);
+            }
+            else
+            {
+                var newcounter=new Counter();
+
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+
+                newcounter.save();
+            }
+        },
+        error: function(error){
+          console.log(error);
+            // alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+var Counter=AV.Object.extend("Counter2");
+if (window.location.href.indexOf('index.php/archives') > -1) {
+    addCount(Counter);
+} else {
+    showCount(Counter);
+}
+</script>
+<script>
+
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cc3b1819bb80c692fc8d2c31352da6a7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<style type="text/css">
+    .pwa-tips {
+        position: fixed;
+        top: 13px;
+        left: 10%;
+        right: 10%;
+        height: 50px;
+        border-radius: 3px;
+        text-align: center;
+        background-color: #343a44;
+        color: #f1f1f1;
+        line-height: 50px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(22,22,22,.5), 0 2px 3px rgba(2,2,2,.5);
+        transition: all 1s;
+        opacity: 0;
+        display: none;
+    }
+    .pwa-tips .close {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        background-color: #fff;
+        width: 15px;
+        height: 15px;
+        line-height: 13px;
+        color: #000;
+        border-radius: 50%;
+        position: 9;
+    }
+
+</style>
+  <div class="pwa-tips" id="pwaTips">吕小鸣的前端博客正在使用PWA，是否安装到桌面？<span id="closepwaTips" class="close">x</span></div>
+  <script type="text/javascript">
+        var dfdPrompt = null;
+        var clickTips = false;
+        var pwaTips = document.getElementById('pwaTips');
+        var closepwaTips = document.getElementById('closepwaTips');
+        window.addEventListener('beforeinstallprompt', function (e) {
+            if (clickTips) return;
+            // 存储事件
+            dfdPrompt = e;
+            // 显示按钮
+            pwaTips.style.display = 'block';
+            setTimeout(function(){
+                pwaTips.style.opacity = '1';
+            },100)
+            
+
+            // 阻止默认事件
+            e.preventDefault();
+            return false;
+        });
+        pwaTips.addEventListener('click', function (e) {
+            if (dfdPrompt == null || e.srcElement.classList.contains('close')) {
+                return;
+            }
+            // 通过按钮点击事件触发横幅显示
+            dfdPrompt.prompt();
+            // 监控用户的安装行为
+            dfdPrompt.userChoice.then(function (choiceResult) {
+                // alert(choiceResult.outcome);
+            });
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+            dfdPrompt = null;
+            clickTips = true;
+        });
+        closepwaTips.addEventListener('click', function (e) {
+
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+        });
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<% if (site.posts.length){ %>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+    <h3 class="widget-title-l"><%= __('recent_posts') %></h3>
+      <ul>
+        <% site.posts.sort('date', -1).limit(5).each(function(post){ %>
+          <li class="recent-li">
+            <a href="<%- url_for(post.path) %>"><%= post.title || '(no title)' %></a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+<% } %>

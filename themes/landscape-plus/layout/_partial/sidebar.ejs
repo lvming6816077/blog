@@ -1,0 +1,54 @@
+<aside id="sidebar"<% if (theme.sidebar === 'bottom'){ %> class="outer"<% } %>>
+
+  <div class="widget-wrap">
+    
+    <div class="widget info">
+
+      <img class="avatar" src="https://wx4.sinaimg.cn/mw690/808a542aly1giwdawiinbj20cs0cs0uv.jpg"/>
+      <h3 class="nick-name">吕小鸣</h3>
+      <p class="desc">实践过，才懂得</p>
+      <div class="post-info">
+        <div class="info-inner">
+          <div class="info-num"><%-site.posts.length%></div>
+          <div class="info-name">文章</div>
+        </div>
+        <div class="info-inner">
+          <div class="info-num"><%-site.categories.length-10%></div>
+          <div class="info-name">分类</div>
+        </div>
+        <div class="info-inner">
+          <div class="info-num"><%-site.tags.length%></div>
+          <div class="info-name">标签</div>
+        </div>
+      </div>
+      <div class="info-links">
+        <a class="info-link github" href="https://github.com/lvming6816077" target="_blank" title="GitHub">
+        <i class="github"></i>
+          GitHub
+        </a>
+        <a class="info-link weibo" href="http://weibo.com/lvming6816077/home?wvr=5&topnav=1&mod=logo" target="_blank" title="GitHub">
+        <i class="weibo"></i>
+          WeiBo
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <img style="width:100%;" src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fd1ebc6f88746c390d6b87d766018d4~tplv-k3u1fbpfcp-zoom-1.image" />
+    </div>
+    
+  </div>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <img style="width:100%;" src="https://qiniu.nihaoshijie.com.cn/qunmingp.jpg" />
+    </div>
+
+  </div>
+
+  <% theme.widgets.forEach(function(widget){ %>
+    <%- partial('_widget/' + widget) %>
+  <% }) %>
+</aside>

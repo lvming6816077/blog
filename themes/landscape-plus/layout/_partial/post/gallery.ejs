@@ -1,0 +1,7 @@
+<% if (post.photos && post.photos.length){ %>
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    <div style="background-image:url(<%- url_for(post.photos[0]) %>);" class="post-pic"></div>
+  </div>
+</div>
+<% } %>

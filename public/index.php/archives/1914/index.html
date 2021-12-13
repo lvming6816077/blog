@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <link rel="manifest" href="manifest.json">
+
+<meta name="referrer" content="never">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="application-name" content="吕小鸣">
+<meta name="apple-mobile-web-app-title" content="吕小鸣">
+<meta name="msapplication-starturl" content="/">
+<link rel="icon" href="https://avatars2.githubusercontent.com/u/7931760?s=192&v=4">
+<link rel="apple-touch-icon" href="https://avatars2.githubusercontent.com/u/7931760?s=192&v=4">
+  
+  <title>Vue.js Composition API | 吕小鸣前端博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Vue.js3 Composition API在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
+<meta name="keywords" content="vue3,Composition API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue.js Composition API">
+<meta property="og:url" content="http://www.nihaoshijie.com.cn/index.php/archives/1914/index.html">
+<meta property="og:site_name" content="吕小鸣前端博客">
+<meta property="og:description" content="Vue.js3 Composition API在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f9f354a4b414d1c9b70e83eb41a098a~tplv-k3u1fbpfcp-watermark.image?">
+<meta property="og:updated_time" content="2021-12-10T16:13:46.236Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue.js Composition API">
+<meta name="twitter:description" content="Vue.js3 Composition API在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
+<meta name="twitter:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f9f354a4b414d1c9b70e83eb41a098a~tplv-k3u1fbpfcp-watermark.image?">
+  
+    <link rel="alternative" href="/atom.xml" title="吕小鸣前端博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+
+<style type="text/css">
+    .pwa-tips {
+        position: fixed;
+        top: 13px;
+        left: 10%;
+        right: 10%;
+        height: 50px;
+        border-radius: 3px;
+        text-align: center;
+        background-color: #343a44;
+        color: #f1f1f1;
+        line-height: 50px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(22,22,22,.5), 0 2px 3px rgba(2,2,2,.5);
+        transition: all 1s;
+        opacity: 0;
+        display: none;
+    }
+    .pwa-tips .close {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        background-color: #fff;
+        width: 15px;
+        height: 15px;
+        line-height: 13px;
+        color: #000;
+        border-radius: 50%;
+        position: 9;
+    }
+
+</style>
+<script type="text/javascript">
+// index.html
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js', {scope: '/'})
+      .then(function (registration) {
+        // 注册成功
+        console.log('ServiceWorker registration successful with scope: ', registration.scope)
+      })
+      .catch(function (err) {
+        // 注册失败:(
+        console.log('ServiceWorker registration failed: ', err)
+      })
+  })
+}
+
+</script>
+</head></html>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">吕小鸣前端博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">热爱前端，关注前端开发技术</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">文章归档</a>
+        
+          <a class="main-nav-link" href="/about">关于本站</a>
+        
+          <a class="main-nav-link" href="/exercise">练习</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="www.nihaoshijie.com.cn">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Vue.js Composition API" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner ">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vue.js Composition API
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1><span id="vuejs3-composition-api">Vue.js3 Composition API</span></h1><p>在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。<br><a id="more"></a><br>通过创建Vue组件，我们可以将界面中重复的部分连同其功能一起提取为可重用的代码段。仅此一项就可以使我们的应用在可维护性和灵活性方面走得相当远。然而，我们的经验已经证明，光靠这一点可能并不够，尤其是当你的应用变得非常大的时候——想想几百个组件。处理这样的大型应用时，共享和重用代码变得尤为重要。</p>
+<p>Composition API给我们提供了更加高效的代码逻辑组合能力，整体提示项目的可维护性，是函数式编程的重要体现。</p>
+<h2><span id="composition-api-基础">Composition API 基础</span></h2><p>通常，一个Vue组件对象大概是包括一些data属性，生命周期钩子函数，methods，components，props等等的配置项的Object对象，如示例代码所示。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'test'</span>,</span><br><span class="line">  components: &#123;&#125;,</span><br><span class="line">  props: &#123;&#125;,</span><br><span class="line">  data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created()&#123;&#125;,</span><br><span class="line">  mounted () &#123;&#125;,</span><br><span class="line">  watch:&#123;&#125;,</span><br><span class="line">  methods: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种通过选项来配置Vue组件的方式称作配置式API，我们大部分的业务逻辑都是写在这些配置对应的方法或者配置里，这种方式使得每个配置各司其职，data、computed、methods、watch每个组件选项都有自己的业务逻辑。然而，当我们的组件开始变得更大时，逻辑关注点的列表也会增长。尤其对于那些一开始没有编写这些组件的人来说，这会导致组件难以阅读和理解，如图所示。</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f9f354a4b414d1c9b70e83eb41a098a~tplv-k3u1fbpfcp-watermark.image?" alt="image.png"></p>
+<p>如上图是一个大型组件，其逻辑是很复杂的，其中的逻辑关注点按颜色进行分组，当我们关注一条流程逻辑时，可能需要来回的在data、computed、methods、watch之间切换滚动这些代码块，这种碎片化使得理解和维护复杂组件变得困难，虽然在之前章节讲到过Mixin在一定程度上可以抽离出一些组件中的代码，但始终不是最高效的。</p>
+<p>为了能够将同一个逻辑关注点相关代码更好的收集在一起，Vue 3引入了与配置式API相对应的Composition组合式API，将上面的配置式API代码转换成组合式API，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import &#123;onMounted,reactive,watch&#125; from &apos;vue&apos;</span><br><span class="line">export default &#123;</span><br><span class="line">    props: &#123;</span><br><span class="line">      name: String,</span><br><span class="line">    &#125;,</span><br><span class="line">    name: &apos;test&apos;,</span><br><span class="line">    components: &#123;&#125;,</span><br><span class="line">    setup(props,ctx) &#123;</span><br><span class="line">      console.log(props.name)</span><br><span class="line">      console.log(&apos;created&apos;)</span><br><span class="line">      const data = reactive(&#123;</span><br><span class="line">        a: 1</span><br><span class="line">      &#125;)</span><br><span class="line">      watch(</span><br><span class="line">        () =&gt; data.a,</span><br><span class="line">        (val, oldVal) =&gt; &#123;</span><br><span class="line">          console.log(val)</span><br><span class="line">        &#125;</span><br><span class="line">      )</span><br><span class="line">      onMounted(()=&gt;&#123;</span><br><span class="line">        </span><br><span class="line">      &#125;)</span><br><span class="line">      const myMethod = (obj) =&gt;&#123;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      retrun &#123;</span><br><span class="line">          data,</span><br><span class="line">          myMethod</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上所示可以看到，组合式API的代码逻辑都可以写在setup方法中，这使得逻辑更加集中，更加原子化，从而提示可维护性。</p>
+<h2><span id="setup-方法">setup 方法</span></h2><p>为了开始使用组合式 API，我们首先需要一个可以实际使用它的地方。在Vue 3的组件中，我们将此位置称为setup方法，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b user=&quot;John&quot; /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    user: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      required: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  template:&apos;&lt;div&gt;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props,context) &#123;</span><br><span class="line">    console.log(props.user) // 打印&apos;John&apos;</span><br><span class="line">    return &#123;&#125; // 这里返回的任何内容都可以用于组件的其余部分</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<h3><span id="setup方法参数">setup方法参数</span></h3><p>setup方法中接收两个参数，第一个参数式props，它和之前讲解组件通信中的props一样，可以接收到父组件传递的数据，同样，如果props是一个动态值，那么它就是响应式的，会随着父组件的改变而更新。</p>
+<p>但是，因为props是响应式的，你不能使用ES6解构，它会消除prop的响应性。如果需要解构prop，可以在setup方法中使用toRefs函数来完成此操作，如下代码所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setup(props,context) &#123;</span><br><span class="line">    const &#123; user &#125; = Vue.toRefs(props)</span><br><span class="line">    console.log(user.value) // 打印&apos;John&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意，如果是采用npm来管理的项目，可以采用如下import方式引入toRefs，包括后续的Composition API相关的方法：</p>
+<p><code>import { toRefs } from &#39;vue&#39;</code></p>
+<p>如果user是可选的prop，则传入的props中可能没有user。在这种情况下，需要使用toRef替代它，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setup(props,context) &#123;</span><br><span class="line">    const &#123; user &#125; = Vue.toRef(props,&apos;user&apos;)</span><br><span class="line">    console.log(user.value) // 打印&apos;John&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>setup方法的第二个参数是context对象，context是一个普通的JavaScript对象，它暴露组件的三个属性，分别是attrs，slots，emit，并且由于是普通的JavaScript对象，可以之间采用ES6解构，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b attrone=&quot;one&quot; @emitcallback=&quot;emitcallback&quot;&gt;</span><br><span class="line">    &lt;template v-slot:slotone&gt;</span><br><span class="line">      &lt;span&gt;slot&lt;/span&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">  &lt;/component&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line"></span><br><span class="line">  template:&apos;&lt;div&gt;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props, &#123; attrs, slots, emit &#125;) &#123;</span><br><span class="line"></span><br><span class="line">    // Attribute (非响应式对象)</span><br><span class="line">    console.log(attrs) // 打印 &#123; attrone: &apos;one&apos; &#125; 相当于this.$attrs</span><br><span class="line"></span><br><span class="line">    // 插槽 (非响应式对象)</span><br><span class="line">    console.log(slots.slotone) // 打印&#123; slotone: function()&#123;&#125; &#125; 相当于this.$slots</span><br><span class="line"></span><br><span class="line">    // 触发事件 (方法)</span><br><span class="line">    console.log(emit) // 可调用emit(&apos;emitcallback&apos;)相当于this.$emit</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">const vm = Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    emitcallback()&#123;</span><br><span class="line">      console.log(&apos;emitcallback&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>其中，attrs对象是父组件传递给子组件且不在props中定义的的静态数据，它是非响应式的，相当于在没有使用setup方法时之外调用的this.\$attrs效果。</p>
+<p>slots对象主要是父组件传递的插槽内容，注意v-slot:slotone需要配置插槽名字，这样slots才能接收到，它是非响应式的，相当于在没有使用setup方法时之外调用的this.\$slots效果。</p>
+<p>emit对象主要用来和父组件通信，相当于在没有使用setup方法时之外调用的this.\$emit效果。</p>
+<h3><span id="setup方法结合模板使用">setup方法结合模板使用</span></h3><p>如果setup方法返回一个对象，那么该对象的属性以及传递给setup的props参数中的属性就都可以在模板template中访问到，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b user=&quot;John&quot; /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    user: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      required: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;user&#125;&#125; &#123;&#123;person.name&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    const person = Vue.reactive(&#123; name: &apos;Son&apos; &#125;)</span><br><span class="line">    // 暴露给 template</span><br><span class="line">    return &#123;</span><br><span class="line">        person</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>注意，props中的数据我们不必在setup中返回，Vue会自动的暴露给模板template中使用。</p>
+<h3><span id="setup方法执行时机和getcurrentinstance方法">setup方法执行时机和getCurrentInstance方法</span></h3><p>setup方法在组件的beforeCreate之前执行，此时由于组件还没有实例化，是无法之间像配置式API一样直接使用this.xx访问当前实例的上下文对象的，例如data，computed和methods都没法访问到，所以setup在和其它配置式API一起使用时可能会导致混淆，需要格外注意。</p>
+<p>但是，Vue在还是在Composition API中提供了getCurrentInstance方法来访问组件实例的上下文对象，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    Vue.onMounted(()=&gt;&#123;</span><br><span class="line">      const internalInstance = Vue.getCurrentInstance()</span><br><span class="line">      internalInstance.ctx.add()// 打印&apos;methods add&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    add()&#123;</span><br><span class="line">      console.log(&apos;methods add&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>需要注意的是请不要把它当作在像在配置式API中的this的替代方案来随意使用，另外getCurrentInstance只能在setup或生命周期钩子中调用，并且不建议在业务逻辑中使用该方法，可以一些开发第三方库中使用。</p>
+<h2><span id="响应式类方法">响应式类方法</span></h2><p>在配置式API中，我们一般将需要有响应式的变量定义在data选项的属性里面，而在Vue 3的Composition API的setup方法里面，由于还无法访问到data属性，但是也可以定义响应式变量，主要用到toRef，toRefs，ref，reactive和一些其他方法，其中有些我们之前代码中已经用到过了，下面就来详细介绍一下他们的用法和区别。</p>
+<h3><span id="ref和reactive">ref和reactive</span></h3><p>1. ref方法</p>
+<p>ref方法用于为数据添加响应式状态，可以支持基本的数据类型，也可以支持复杂的对象数据类型，是Vue 3中推荐的定义响应式数据的方法，也是最基本的响应式方法，需要注意的是：</p>
+<ul>
+<li><p>获取数据值的时候需要加.value。</p>
+</li>
+<li><p>ref的本质是原始数据的拷贝，改变简单类型数据的值不会同时改变原始数据。</p>
+</li>
+</ul>
+<p>使用方法如实例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b  /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;name&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    // 为基本数据类型添加响应式状态</span><br><span class="line">    const name = Vue.ref(&apos;John&apos;)</span><br><span class="line"></span><br><span class="line">    let obj = &#123;count : 0&#125;;</span><br><span class="line"></span><br><span class="line">    // 为复杂数据类型添加响应式状态</span><br><span class="line">    const state = Vue.ref(obj)</span><br><span class="line"></span><br><span class="line">    console.log(name.value) // 打印John</span><br><span class="line"></span><br><span class="line">    console.log(state.value.count)// 打印0</span><br><span class="line"></span><br><span class="line">    let newobj = Vue.ref(obj.count)</span><br><span class="line"></span><br><span class="line">    // 修改响应式数据不会影响原数据</span><br><span class="line">    newobj.value = 1</span><br><span class="line"></span><br><span class="line">    console.log(obj.count)// 打印0</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line">      name</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，改变的这个数据必须是简单数据类型，一个具体的值，这样才不会影响到原始数据，如上面的代码中的obj.count。</p>
+<p>2. reactive方法</p>
+<p>ref方法用于为复杂数据添加响应式状态，只支持对象数据类型，需要注意的是：</p>
+<ul>
+<li><p>获取数据值的时候不需要加.value。</p>
+</li>
+<li><p>reactive的参数必须是一个对象，包括JSON数据和数组都可以，否则不具有响应式。</p>
+</li>
+<li><p>和ref一样，reactive的本质也是原始数据的拷贝。</p>
+</li>
+</ul>
+<p>ref本质也是reactive，ref(obj)等价于reactive({value:obj})，使用方法如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b  /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;state.count&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    // 为复杂数据类型添加响应式状态</span><br><span class="line">    const state = Vue.reactive(&#123;count : 0&#125;)</span><br><span class="line"></span><br><span class="line">    console.log(state.count)// 打印0</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line">      state</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>reactive和ref都是用来定义响应式数据的。reactive更推荐去定义复杂的数据类型，不能直接解构，ref更推荐定义基本类型。ref可以简单地理解为是对reactive的二次包装，ref定义的数据访问的时候要多一个.value。</p>
+<h3><span id="toref和torefs">toRef和toRefs</span></h3><p>1. toRef方法</p>
+<p>toRef方法我们在之前的setup方法中对props的操作已经使用过了，其第一种使用场景用于为原响应式对象上的属性新建单个响应式ref，从而保持对其源对象属性的响应式连接。接收两个参数：原响应式对象和属性名，返回一个ref数据。例如使用父组件传递的props数据时，要引用props的某个属性且要保持响应式连接时就很有用，其第二种使用场景是，接收两个参数：原普通对象和属性名，此时可以对单个属性添加响应式ref，但是这个响应式ref的改变不会更新界面，需要注意的是：</p>
+<ul>
+<li><p>获取数据值的时候需要加.value。</p>
+</li>
+<li><p>toRef后的ref数据不是原始数据的拷贝，而是引用，改变结果数据的值也会同时改变原始数据。</p>
+</li>
+<li><p>对于原始普通数据来说，新增加的单个ref改变，数据会更新，但是界面不会自动更新。</p>
+</li>
+</ul>
+<p>使用方法如实例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b user=&quot;John&quot; /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line"></span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;statecount.count&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    const state = Vue.reactive(&#123;</span><br><span class="line">      foo: 1,</span><br><span class="line">      bar: 2</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    const fooRef = Vue.toRef(state, &apos;foo&apos;)</span><br><span class="line"></span><br><span class="line">    fooRef.value++</span><br><span class="line">    console.log(state.foo) // 打印2会影响原始数据</span><br><span class="line"></span><br><span class="line">    state.foo++</span><br><span class="line">    console.log(fooRef.value) // 打印3会影响fooRef数据</span><br><span class="line"></span><br><span class="line">    const statecount = &#123;// 普通数据</span><br><span class="line">      count: 0,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const stateRef = Vue.toRef(statecount,&apos;count&apos;)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      stateRef.value = 1 // 界面不会更新</span><br><span class="line">      console.log(statecount.count) // 打印1 会影响原始数据</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line">      statecount,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>toRef更多的使用场景是对象添加单个响应式属性，而toRefs则是对完整的响应式对象进行转换。</p>
+<p>2. toRefs方法</p>
+<p>toRefs方法将原响应式对象转换为普通对象，其中结果对象的每个属性都是指向原始对象相应<br>属性的ref，另外一个重要使用场景是可以将reactive方法返回的复杂响应式数据ES6解构，需要注意的是：</p>
+<ul>
+<li><p>获取数据值的时候需要加.value。</p>
+</li>
+<li><p>toRefs后的ref数据不是原始数据的拷贝，而是引用，改变结果数据的值也会同时改变原始数据。</p>
+</li>
+<li><p>toRefs只接受响应式对象参数，不可接收普通对象参数，否则会警告。</p>
+</li>
+</ul>
+<p>使用方法如实例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b  /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;max&#125;&#125;,&#123;&#123;count&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    let obj = &#123;</span><br><span class="line">      count: 0,</span><br><span class="line">      max: 100</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const statecount = Vue.reactive(obj)</span><br><span class="line"></span><br><span class="line">    const &#123;count,max&#125; = Vue.toRefs(statecount) // 方便解构</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line"></span><br><span class="line">      statecount.max++</span><br><span class="line">      console.log(obj.max) // 打印101 会影响原始数据，同时界面更新</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line">      count,</span><br><span class="line">      max</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>目前用的最多的还是ref和reactive来创建响应式对象，使用toRefs来转换成可以方便使用的解构的对象。</p>
+<h3><span id="其他响应式类方法">其他响应式类方法</span></h3><ol>
+<li>shallowRef方法和shallowReactive方法triggerRef方法</li>
+</ol>
+<p>对于复杂对象而言，ref和reactive都属于递归嵌套监听，也就是数据的每一层都是响应式的，如果数据量比较大，非常消耗性能，shallowRef和shallowReactive则是非递归监听只会监听数据的第一层。如实例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;shallow.person.name&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    const shallow = Vue.shallowRef(&#123;</span><br><span class="line">      greet: &apos;Hello, world&apos;,</span><br><span class="line">      person:&#123;</span><br><span class="line">        name:&apos;John&apos;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      // 这不会触发更新，因为 ref 是浅层的</span><br><span class="line">      shallow.value.person.name = &apos;Ted&apos; </span><br><span class="line">      // 当调用triggerRef强制更新</span><br><span class="line">      Vue.triggerRef(shallow)</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    return &#123;shallow&#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>triggerRef可以强制触发之前没有被监听到的更新，另外shallowReactive没有类似triggerRef的方法。</p>
+<ol start="2">
+<li>readonly方法和shallowReadonly和isReadonly</li>
+</ol>
+<p>从字面意思上来理解，readonly表示只读可以将响应式对象标识成只读，当尝试修改时则会抛出警告，同样shallowReadonly方法设置第一层只读，isReadonly方法判断是否为只读对象，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line"></span><br><span class="line">    const obj = Vue.readonly(&#123; foo: &#123; bar: 1 &#125; &#125;)</span><br><span class="line"></span><br><span class="line">    console.log(Vue.isReadonly(obj)) // true</span><br><span class="line"></span><br><span class="line">    obj.foo.bar = 2 // 失败警告：Set operation on key &quot;bar&quot; failed: target is readonly.</span><br><span class="line">    const sobj = Vue.shallowReadonly(&#123; foo: &#123; bar: 1 &#125; &#125;)</span><br><span class="line"></span><br><span class="line">    sobj.foo.bar = 2 // 第二层可以修改</span><br><span class="line"></span><br><span class="line">    return &#123;&#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>isRef方法和isReactive方法和isProxy</li>
+</ol>
+<p>isRef方法判断是否是ref方法返回对象，isReactive方法判断是否是reactive方法返回对象，isProxy用于判断是否是reactive方法或者ref方法返回对象。</p>
+<ol start="4">
+<li>toRaw方法和makeRaw方法</li>
+</ol>
+<p>toRaw方法可以返回一个响应式对象的原始普通对象，可用于临时读取数据而无需承担代理访问/跟踪的开销，也可用于写入数据而避免触发更改。</p>
+<p>makeRaw方法，可以标记并返回一个对象，使其永远不会成为响应式对象。如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;reactivecobj.bar&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line">    const obj = &#123; foo : 1&#125;</span><br><span class="line">    const reactivecobj = Vue.reactive(obj)</span><br><span class="line">    const rawobj = Vue.toRaw(reactivecobj)</span><br><span class="line"></span><br><span class="line">    console.log(obj === rawobj) // true</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      rawobj.bar = 2 // 不会触发响应式更新</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    const foo = &#123;a:1&#125; // foo无法通过reactive成为响应式对象</span><br><span class="line"></span><br><span class="line">    console.log(isReactive(reactive(foo))) // false</span><br><span class="line"></span><br><span class="line">    return &#123;reactivecobj&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<h2><span id="监听类方法">监听类方法</span></h2><p>之所以叫做监听（侦听）类方法，主要是这章我们介绍的方法其作用类似于配置式API中使用的watch方法，computed方法等等。监听类方法主要使用场景是提供对于响应式数据改变的追踪和影响，并提供一些钩子函数。本章我们主要介绍Composition API 中的computed和watch方法。</p>
+<h3><span id="computed方法">computed方法</span></h3><p>在配置式API中，computed是指计算属性，计算属性里可以完成各种复杂的逻辑，包括运算、函数调用等，只要最终返回一个结果就可以。计算属性是基于它们的响应式依赖进行缓存的。只在相关响应式依赖发生改变时它们才会重新求值。Composition API 中的computed也是类似的，使用方法如实例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &#123;&#123;info&#125;&#125;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const state = Vue.reactive(&#123;</span><br><span class="line">      name: &quot;John&quot;,</span><br><span class="line">      age: 18</span><br><span class="line">    &#125;);</span><br><span class="line">    const info = Vue.computed(() =&gt; &#123; // 创建一个计算属性，依赖name和age</span><br><span class="line">      console.log(&apos;computed&apos;)</span><br><span class="line">      return state.name + &apos;,&apos; + state.age</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    info.value = 1 // 抛出警告</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">      state.age = 20 // info动态修改</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      state.age = 20 // 第二次走缓存</span><br><span class="line">    &#125;,2000)</span><br><span class="line"></span><br><span class="line">    return &#123;info&#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>上面代码中，计算属性info依赖state中的age和name，当他们发生变化时，会导致info变化，同时如果每次变化的值相同，则走缓存，不会再次执行computed里的方法，这和配置式API里的computed是一致的。同时info是也是一个不可变的响应式对象，尝试修改会抛出警告。</p>
+<p>computed方法也可以接收一个对象，分别配置get和set方法，这样返回的可被修改，对应调用set方法，如下代码所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const info = Vue.computed(&#123;</span><br><span class="line">  get: () =&gt; state.name + &apos;,&apos; + state.age,</span><br><span class="line">  set: val =&gt; &#123;</span><br><span class="line">    state.age = val - 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">info.value = 21</span><br></pre></td></tr></table></figure>
+<p>12.5.3 watchEffect方法</p>
+<p>watchEffect方法可以显示的监听这些变化，参数是一个函数，这个函数里所依赖的响应式对象如果发生变化，都会触发到这个函数，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &#123;&#123;info&#125;&#125;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const state = Vue.reactive(&#123;</span><br><span class="line">      name: &quot;John&quot;,</span><br><span class="line">      age: 18</span><br><span class="line">    &#125;);</span><br><span class="line">    const count = Vue.ref(0)</span><br><span class="line">    const countNo = Vue.ref(0)</span><br><span class="line">    const info = Vue.computed(() =&gt; &#123; // 创建一个计算属性，依赖name和age</span><br><span class="line">      return state.name + &apos;,&apos; + state.age</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    Vue.watchEffect(()=&gt;&#123;</span><br><span class="line">      console.log(&apos;watchEffect&apos;)</span><br><span class="line">      console.log(info.value) // 依赖了info</span><br><span class="line">      console.log(count.value) // 依赖了count</span><br><span class="line">      </span><br><span class="line">    &#125;)</span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      state.age = 20 // 触发watchEffect</span><br><span class="line">    &#125;,1000)</span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      count.value = 3 // 触发watchEffect</span><br><span class="line">    &#125;,2000)</span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      countNo.value = 5 // 不触发watchEffect</span><br><span class="line">    &#125;,3000)</span><br><span class="line"></span><br><span class="line">    return &#123;info&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>当watchEffect在组件的setup方法或生命周期钩子被调用时，侦听器会被链接到该组件的生命周期，并在组件卸载时自动停止在，一些情况下，也可以显式调用返回值以停止侦听，如下代码所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const stop = watchEffect(() =&gt; &#123;</span><br><span class="line">  /* ... */</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">stop()</span><br></pre></td></tr></table></figure>
+<h3><span id="watch方法">watch方法</span></h3><p>在配置式API中，watch是指监听器，Composition<br>API中同样提供了watch方法，其使用场景和用法是一致的，主要是对响应式对象变化的监听。但是和watchEffect相比有些类似，主要区别是：</p>
+<ul>
+<li><p>watch需要侦听特定的数据源，并在回调函数中执行副作用。</p>
+</li>
+<li><p>默认情况下，它也是惰性的，即只有当被侦听的源发生变化时才执行回调。</p>
+</li>
+<li><p>可以访问侦听状态变化前后的值。</p>
+</li>
+</ul>
+<p>watch监听单个数据源，第一个参数可以是返回值的getter函数，也可以是一个响应式对象，第二个参数是触发变化的回调函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    // 侦听一个 getter</span><br><span class="line">    const state = Vue.reactive(&#123; count: 0 &#125;)</span><br><span class="line"></span><br><span class="line">    Vue.watch(() =&gt; state.count,</span><br><span class="line">      (count, prevCount) =&gt; &#123;</span><br><span class="line">        console.log(count, prevCount)</span><br><span class="line">      &#125;</span><br><span class="line">    )</span><br><span class="line">    // 直接侦听ref</span><br><span class="line">    const count = Vue.ref(0)</span><br><span class="line">    Vue.watch(count, (count, prevCount) =&gt; &#123;</span><br><span class="line">      console.log(count, prevCount)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      state.count = 1</span><br><span class="line">      count.value = 2</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>watch监听多个数据源，第一个参数为多个响应式对象的数组，第二个参数是触发变化的回调函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const state = Vue.reactive(&#123; name: &apos;John&apos; &#125;)</span><br><span class="line">    const count = Vue.ref(0)</span><br><span class="line"></span><br><span class="line">    Vue.watch([count,state], (count, prevCount) =&gt; &#123;</span><br><span class="line">      console.log(count, prevCount)</span><br><span class="line">      // [2,&#123;name:&quot;Ted&quot;&#125;]   [0,&#123;name:&quot;John&quot;&#125;]</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      state.name = &apos;Ted&apos;</span><br><span class="line">      count.value = 2</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>watch监听复杂响应式对象时，如果要完全深度监听，需要添加deep:true配置，同时第一个参数需要为一个<br>getter方法，同时采用深度复制，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const state = Vue.reactive(&#123;</span><br><span class="line">      name: &quot;John&quot;,</span><br><span class="line">      age: 18,</span><br><span class="line">      attributes: &#123; </span><br><span class="line">        attr: &apos;efg&apos;,</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">Vue.watch(()=&gt;JSON.parse(JSON.stringify(state)),// 利用深度复制</span><br><span class="line">(currentState, prevState) =&gt; &#123;</span><br><span class="line">        console.log(currentState.attributes.attr)// abc</span><br><span class="line">        console.log(prevState.attributes.attr)// efg</span><br><span class="line">      &#125;,&#123; deep: true &#125;)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">        state.attributes.attr = &apos;abc&apos;</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>需要注意，深度监听需要对原始state进行深度复制并返回，可以采用JSON.parse()，JSON.stringify()的方法进行复制，也可以采用一些第三方库，例如lodash.cloneDeep方法。</p>
+<h2><span id="生命周期类方法">生命周期类方法</span></h2><p>生命周期方法，通常叫做生命周期钩子，在配置式API中我们已经了解了具体的生命周期方法，在Composition API的setup方法里面同样有对应的生命周期方法，他们的对应关系如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">beforeCreate -&gt; 使用 setup()</span><br><span class="line"></span><br><span class="line">created -&gt; 使用 setup()</span><br><span class="line"></span><br><span class="line">beforeMount -&gt; onBeforeMount</span><br><span class="line"></span><br><span class="line">mounted -&gt; onMounted</span><br><span class="line"></span><br><span class="line">beforeUpdate -&gt; onBeforeUpdate</span><br><span class="line"></span><br><span class="line">updated -&gt; onUpdated</span><br><span class="line"></span><br><span class="line">beforeUnmount -&gt; onBeforeUnmount</span><br><span class="line"></span><br><span class="line">unmounted -&gt; onUnmounted</span><br><span class="line"></span><br><span class="line">errorCaptured -&gt; onErrorCaptured</span><br><span class="line"></span><br><span class="line">renderTracked -&gt; onRenderTracked</span><br><span class="line"></span><br><span class="line">renderTriggered -&gt; onRenderTriggered</span><br><span class="line"></span><br><span class="line">activated -&gt; onActivated</span><br><span class="line"></span><br><span class="line">deactivated -&gt; onDeactivated</span><br></pre></td></tr></table></figure>
+<p>由于setup方法在组件的beforeCreate和created之前执行，所以不在提供对应的钩子方法，这些生命周期钩子注册函数只能在setup方法内同步使用，因为它们依赖于内部的全局状态来定位当前活动的实例<br>(此时正在调用其setup的组件实例)，在没有当前活动实例的情况下，调用它们将会出错。同时，在这些生命周期钩子内同步创建的侦听器和计算属性也会在组件卸载时自动删除，这点和配置式API式一致的。如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const MyComponent = &#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    Vue.onMounted(() =&gt; &#123;</span><br><span class="line">      console.log(&apos;mounted!&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">    Vue.onUpdated(() =&gt; &#123;</span><br><span class="line">      console.log(&apos;updated!&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">    Vue.onUnmounted(() =&gt; &#123;</span><br><span class="line">      console.log(&apos;unmounted!&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2><span id="methods方法">methods方法</span></h2><p>除了上面所讲解的方法之外，还有一类就是使用最多的对应配置式API中的methods类方法了，这类方法主要结合模板template中的一些回调事件使用，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &#123;&#123;count&#125;&#125;</span><br><span class="line">  &lt;button @click=&quot;add&quot;&gt;点我+1&lt;/button&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const count = Vue.ref(0)</span><br><span class="line"></span><br><span class="line">    const add = ()=&gt;&#123;</span><br><span class="line">      count.value++</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return &#123; count,add &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>上面代码中，在setup方法中返回了add方法，这样在模板template中就可以进行绑定，当click事件触发时，会进入这个方法。</p>
+<p>当结合配置式API使用时，如果在组件的methods中也配置了同名的方法，那么会优先执行setup中定义的，methods中定义的方法将不会执行，如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Vue.createApp(&#123;</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const count = Vue.ref(0)</span><br><span class="line"></span><br><span class="line">    const add = ()=&gt;&#123;</span><br><span class="line">      count.value++</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return &#123; count,add &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    add()&#123;&#125; // 不会触发</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>同样，在进行组件通信时，如果遇到同名的方法，优先以setup中定义并返回的方法为主，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b @add=&quot;add&quot;/&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&lt;/div&gt;&apos;,</span><br><span class="line">  setup(props,&#123;emit&#125;) &#123;</span><br><span class="line">    emit(&apos;add&apos;) // 通知父组件</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const add = ()=&gt;&#123;</span><br><span class="line">      console.log(&apos;setup add&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">    return &#123; add &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    add()&#123;</span><br><span class="line">      console.log(&apos;methods add&apos;) // 不会触发</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>上面代码中，当子组件调用emit通知父组件时，会调用父组件setup方法中的add方法，而不会调用methods中定义的。</p>
+<h2><span id="provide-inject">Provide / Inject</span></h2><p>provide（提供）和inject（注入）也可以在Composition API的setup方法里面使用，来实现跨越层级的组件通信。</p>
+<p>provide方法接受两个参数，第一个参数是提供数据的key，第二个参数是值value，可以是对象，方法等等，如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;component-b /&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    Vue.provide(&apos;location&apos;, &apos;North Pole&apos;)</span><br><span class="line">    Vue.provide(&apos;geolocation&apos;, &#123;</span><br><span class="line">      longitude: 90,</span><br><span class="line">      latitude: 135</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>inject方法接受两个参数，第一个参数是需要注入的数据的key，第二个参数是默认值（可选），如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;userLocation&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const userLocation = Vue.inject(&apos;location&apos;, &apos;The Universe&apos;)</span><br><span class="line">    const userGeolocation = Vue.inject(&apos;geolocation&apos;)</span><br><span class="line">    </span><br><span class="line">console.log(userGeolocation)</span><br><span class="line">    return &#123;</span><br><span class="line">      userLocation,</span><br><span class="line">      userGeolocation</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和之前配置式API不同的是，我们可以在provide值时使用ref或reactive方法，来增加provide值和inject值之间的响应性，这样，当provide的数据发生变化时，inject也能实时接收到。如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">const componentB = &#123;</span><br><span class="line"></span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;userLocation&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup() &#123;</span><br><span class="line"></span><br><span class="line">    const userLocation = Vue.inject(&apos;location&apos;, &apos;The Universe&apos;)</span><br><span class="line">    const userGeolocation = Vue.inject(&apos;geolocation&apos;)</span><br><span class="line"></span><br><span class="line">    console.log(userGeolocation)</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line">      userLocation,</span><br><span class="line">      userGeolocation</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const location = Vue.ref(&apos;North Pole&apos;)</span><br><span class="line">    const geolocation = Vue.reactive(&#123;</span><br><span class="line">      longitude: 90,</span><br><span class="line">      latitude: 135</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    Vue.provide(&apos;location&apos;, location)</span><br><span class="line">    Vue.provide(&apos;geolocation&apos;, geolocation)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      location.value = &apos;China&apos;</span><br><span class="line">    &#125;,1000)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>通常情况下，只允许在provide的组件内去修改响应式的provide数据，但是如果需要在被inject里面修改provide的值，则需要provide一个回调方法，然后在被inject的组件内调用。如示例代码所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">const componentB = &#123;</span><br><span class="line">  template:&apos;&lt;div&gt;&#123;&#123;userLocation&#125;&#125;&lt;/div&gt;&apos;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const userLocation = Vue.inject(&apos;location&apos;, &apos;The Universe&apos;)</span><br><span class="line">    const updateLocation = Vue.inject(&apos;updateLocation&apos;)</span><br><span class="line"></span><br><span class="line">    setTimeout(()=&gt;&#123;</span><br><span class="line">      updateLocation(&apos;China&apos;)</span><br><span class="line">    &#125;,1000)</span><br><span class="line"></span><br><span class="line">    return &#123;</span><br><span class="line">      userLocation,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">Vue.createApp(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    &apos;component-b&apos;: componentB</span><br><span class="line">  &#125;,</span><br><span class="line">  setup() &#123;</span><br><span class="line">    const location = Vue.ref(&apos;North Pole&apos;)</span><br><span class="line"></span><br><span class="line">    const updateLocation = (v) =&gt; &#123;</span><br><span class="line">      location.value = v</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Vue.provide(&apos;location&apos;, location)</span><br><span class="line">    Vue.provide(&apos;updateLocation&apos;, updateLocation)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;).mount(&quot;#app&quot;)</span><br></pre></td></tr></table></figure>
+<p>最后，如果要确保通过provide传递的数据不会被inject的组件更改，可以使用readonly方法，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const location = Vue.ref(&apos;North Pole&apos;)</span><br><span class="line"></span><br><span class="line">Vue.provide(&apos;location&apos;, Vue.readonly(location))</span><br></pre></td></tr></table></figure>
+<h2><span id="本章小结">本章小结</span></h2><p>在本章中，讲解了Vue 3引入的Composition API相关知识，主要内容包括：Composition<br>API基础，setup方法，响应式类方法，监听类方法，生命周期类方法，methods方法，Provide和Inject。其中setup方法是Composition API的重点，所有相关Composition API新提供的接口都需要在setup中来使用，而响应式类方法中ref方法和reactive方法常被用来定义响应式对象，监听类方法中的computed方法和watch方法则提供了监听到响应式对象变化的时机，生命周期类方法基本和配置式API的使用类似，methods方法则需要注意同名的情况，最后Provide和Inject也是在setup方法中实现组件通信的重要工具。</p>
+<p>在后续的实战项目中，我们会大量的使用Composition API，所以学好本章内容非常重要。</p>
+<p>下面来检验一下读者对本章内容的掌握程度：</p>
+<ul>
+<li><p>setup方法中接受的两个参数，他们的作用分别是什么？Vue.js中父子组件如何通信？</p>
+</li>
+<li><p>如果需要定义基本类型数据为响应式，应该调用哪个方法。</p>
+</li>
+<li><p>watch和watchEffect的区别和各自的使用场景是什么？</p>
+</li>
+<li><p>如何在被inject的组件中修改provide的数据。</p>
+</li>
+<li><p>如果在模板中调用setup方法和配置式API中methods定义的方法同名会怎么样？</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <footer class="article-footer">
+      
+        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/1914/" data-id="ckx0lwh8n001gitnf6ml74d8u" class="article-share-link" data-share="baidu" data-title="Vue.js Composition API">分享到</a>
+      
+
+      <a href="http://www.nihaoshijie.com.cn/index.php/archives/1914/#ds-thread" class="article-comment-link"><span class="dot">•</span>
+      
+      
+      <a href="/index.php/archives/1914/" class="article-date-l">
+  <time datetime="2021-11-26T09:26:17.000Z" itemprop="datePublished">2021-11-26</time>
+</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Composition-API/">Composition API</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue3/">vue3</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+  <!-- 云跟帖配置JavaScript 配置 去除于 20190402 
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    <script>
+    var cloudTieConfig = {
+      url: document.location.href.replace('https','').replace('http',''),
+      sourceId: "",
+      productKey: "eb0b276c0f00410db0322e1a9a9b8bbc",
+      target: "cloud-tie-wrapper"
+    };
+    var yunManualLoad = true;
+    Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+    </script>-->
+
+
+
+  <!--搜狐畅言 PC和WAP自适应版 添加于20190402 删除于20200402-->
+<div id="SOHUCS" sid="ckx0lwh8n001gitnf6ml74d8u" ></div> 
+<script type="text/javascript"> 
+/*(function(){ 
+var appid = 'cyuabuJwF'; 
+var conf = 'prod_2da707f8ba1b3103d72ef0b575e52e20'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); */</script>
+
+</section>
+      
+      <aside id="sidebar">
+
+  <div class="widget-wrap">
+    
+    <div class="widget info">
+
+      <img class="avatar" src="https://wx4.sinaimg.cn/mw690/808a542aly1giwdawiinbj20cs0cs0uv.jpg"/>
+      <h3 class="nick-name">吕小鸣</h3>
+      <p class="desc">实践过，才懂得</p>
+      <div class="post-info">
+        <div class="info-inner">
+          <div class="info-num">53</div>
+          <div class="info-name">文章</div>
+        </div>
+        <div class="info-inner">
+          <div class="info-num">43</div>
+          <div class="info-name">分类</div>
+        </div>
+        <div class="info-inner">
+          <div class="info-num">61</div>
+          <div class="info-name">标签</div>
+        </div>
+      </div>
+      <div class="info-links">
+        <a class="info-link github" href="https://github.com/lvming6816077" target="_blank" title="GitHub">
+        <i class="github"></i>
+          GitHub
+        </a>
+        <a class="info-link weibo" href="http://weibo.com/lvming6816077/home?wvr=5&topnav=1&mod=logo" target="_blank" title="GitHub">
+        <i class="weibo"></i>
+          WeiBo
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <img style="width:100%;" src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fd1ebc6f88746c390d6b87d766018d4~tplv-k3u1fbpfcp-zoom-1.image" />
+    </div>
+    
+  </div>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <img style="width:100%;" src="https://qiniu.nihaoshijie.com.cn/qunmingp.jpg" />
+    </div>
+
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget">
+    <h3 class="widget-title-l">近期文章</h3>
+      <ul>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/913/">Vue3源码解析--目录结构</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/1914/">Vue.js Composition API</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/1201/">Vite与Vue Cli</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/916/">Vue3源码解析--虚拟DOM</a>
+          </li>
+        
+          <li class="recent-li">
+            <a href="/index.php/archives/914/">Vue3源码解析--响应式原理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title-l">归档</h3>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">八月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <h3 class="widget-title-l">标签</h3>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/B端系统/">B端系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Composition-API/">Composition API</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5游戏/">HTML5游戏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PWA/">PWA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React全家桶/">React全家桶</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vite/">Vite</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/">Vue</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-Cli/">Vue Cli</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue-js/">Vue.js</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue3/">Vue3</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bdshare/">bdshare</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/canvas/">canvas</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome插件/">chrome插件</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css动画/">css动画</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http2/">http2</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react16-升级/">react16 升级</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react全家桶/">react全家桶</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rem/">rem</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/requirejs/">requirejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svg/">svg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vmin/">vmin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue3/">vue3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack2/">webpack2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress/">wordpress</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/下拉刷新/">下拉刷新</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/专栏/">专栏</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二叉树遍历/">二叉树遍历</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/全屏滚动/">全屏滚动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端/">前端</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/升级/">升级</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搬家/">博客搬家</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回文串/">回文串</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微前端/">微前端</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/性能优化/">性能优化</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/手势解锁/">手势解锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/架构师/">架构师</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/浏览器/">浏览器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解析/">源码解析</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滚动/">滚动</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/点赞/">点赞</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/离线存储/">离线存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/移动web/">移动web</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/移动web适配/">移动web适配</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/背包问题/">背包问题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/视频直播/">视频直播</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/迷宫问题/">迷宫问题</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/配置指南/">配置指南</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试/">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget tagcloud">
+      <h3 class="widget-title-l">标签云</h3>
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/B端系统/" style="font-size: 10px;">B端系统</a> <a href="/tags/Composition-API/" style="font-size: 10px;">Composition API</a> <a href="/tags/HTML5/" style="font-size: 16px;">HTML5</a> <a href="/tags/HTML5游戏/" style="font-size: 10px;">HTML5游戏</a> <a href="/tags/PWA/" style="font-size: 10px;">PWA</a> <a href="/tags/React-Native/" style="font-size: 14px;">React Native</a> <a href="/tags/React全家桶/" style="font-size: 10px;">React全家桶</a> <a href="/tags/Vite/" style="font-size: 10px;">Vite</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/Vue-Cli/" style="font-size: 10px;">Vue Cli</a> <a href="/tags/Vue-js/" style="font-size: 12px;">Vue.js</a> <a href="/tags/Vue3/" style="font-size: 18px;">Vue3</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/bdshare/" style="font-size: 10px;">bdshare</a> <a href="/tags/canvas/" style="font-size: 10px;">canvas</a> <a href="/tags/chrome插件/" style="font-size: 12px;">chrome插件</a> <a href="/tags/css动画/" style="font-size: 10px;">css动画</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/http2/" style="font-size: 14px;">http2</a> <a href="/tags/https/" style="font-size: 12px;">https</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/react16-升级/" style="font-size: 10px;">react16 升级</a> <a href="/tags/react全家桶/" style="font-size: 10px;">react全家桶</a> <a href="/tags/rem/" style="font-size: 10px;">rem</a> <a href="/tags/requirejs/" style="font-size: 12px;">requirejs</a> <a href="/tags/svg/" style="font-size: 10px;">svg</a> <a href="/tags/vmin/" style="font-size: 10px;">vmin</a> <a href="/tags/vue3/" style="font-size: 10px;">vue3</a> <a href="/tags/webpack2/" style="font-size: 10px;">webpack2</a> <a href="/tags/wordpress/" style="font-size: 10px;">wordpress</a> <a href="/tags/下拉刷新/" style="font-size: 10px;">下拉刷新</a> <a href="/tags/专栏/" style="font-size: 10px;">专栏</a> <a href="/tags/二叉树遍历/" style="font-size: 10px;">二叉树遍历</a> <a href="/tags/全屏滚动/" style="font-size: 10px;">全屏滚动</a> <a href="/tags/前端/" style="font-size: 12px;">前端</a> <a href="/tags/升级/" style="font-size: 10px;">升级</a> <a href="/tags/博客搬家/" style="font-size: 10px;">博客搬家</a> <a href="/tags/回文串/" style="font-size: 10px;">回文串</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/微前端/" style="font-size: 10px;">微前端</a> <a href="/tags/性能优化/" style="font-size: 12px;">性能优化</a> <a href="/tags/手势解锁/" style="font-size: 10px;">手势解锁</a> <a href="/tags/数据结构/" style="font-size: 10px;">数据结构</a> <a href="/tags/架构师/" style="font-size: 10px;">架构师</a> <a href="/tags/浏览器/" style="font-size: 10px;">浏览器</a> <a href="/tags/源码解析/" style="font-size: 14px;">源码解析</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/滚动/" style="font-size: 10px;">滚动</a> <a href="/tags/点赞/" style="font-size: 10px;">点赞</a> <a href="/tags/离线存储/" style="font-size: 10px;">离线存储</a> <a href="/tags/移动web/" style="font-size: 20px;">移动web</a> <a href="/tags/移动web适配/" style="font-size: 10px;">移动web适配</a> <a href="/tags/算法/" style="font-size: 18px;">算法</a> <a href="/tags/背包问题/" style="font-size: 10px;">背包问题</a> <a href="/tags/视频直播/" style="font-size: 10px;">视频直播</a> <a href="/tags/迷宫问题/" style="font-size: 10px;">迷宫问题</a> <a href="/tags/配置指南/" style="font-size: 10px;">配置指南</a> <a href="/tags/面试/" style="font-size: 10px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <h3 class="widget-title-l">友情链接</h3>
+      <ul>
+        
+          <li>
+            <a href="http://blog.csdn.net/u012844719" target="_blank">csdn博客</a>
+          </li>
+        
+          <li>
+            <a href="http://www.dglives.com/" target="_blank">数字生活|前端</a>
+          </li>
+        
+          <li>
+            <a href="http://www.moonwen.com/" target="_blank">春熙路</a>
+          </li>
+        
+          <li>
+            <a href="http://makaiqian.com/" target="_blank">麻凯倩前端</a>
+          </li>
+        
+          <li>
+            <a href="http://jeffjade.com/" target="_blank">晚晴幽草轩</a>
+          </li>
+        
+          <li>
+            <a href="http://www.cnblogs.com/vajoy" target="_blank">Vajoy</a>
+          </li>
+        
+          <li>
+            <a href="https://www.u3xyz.com/" target="_blank">右三</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 吕小鸣的前端博客<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+      .
+    </div>
+    <div style="margin-left: 6px;font-size: 12px;">豫ICP备19009686号</div>
+  </div>
+  <div class="pwa-tips" id="pwaTips">吕小鸣的前端博客正在使用PWA，是否安装到桌面？<span id="closepwaTips" class="close">x</span></div>
+  <script type="text/javascript">
+        var dfdPrompt = null;
+        var clickTips = false;
+        var pwaTips = document.getElementById('pwaTips');
+        var closepwaTips = document.getElementById('closepwaTips');
+        window.addEventListener('beforeinstallprompt', function (e) {
+            if (clickTips) return;
+            // 存储事件
+            dfdPrompt = e;
+            // 显示按钮
+            pwaTips.style.display = 'block';
+            setTimeout(function(){
+                pwaTips.style.opacity = '1';
+            },100)
+            
+
+            // 阻止默认事件
+            e.preventDefault();
+            return false;
+        });
+        pwaTips.addEventListener('click', function (e) {
+            if (dfdPrompt == null || e.srcElement.classList.contains('close')) {
+                return;
+            }
+            // 通过按钮点击事件触发横幅显示
+            dfdPrompt.prompt();
+            // 监控用户的安装行为
+            dfdPrompt.userChoice.then(function (choiceResult) {
+                // alert(choiceResult.outcome);
+            });
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+            dfdPrompt = null;
+            clickTips = true;
+        });
+        closepwaTips.addEventListener('click', function (e) {
+
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+        });
+</script>
+</footer>
+  </div>
+  <nav style="display:none;" id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">文章归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于本站</a>
+  
+    <a href="/exercise" class="mobile-nav-link">练习</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+
+  
+
+</script>
+
+
+<script>
+window._bd_share_main?window._bd_share_is_recently_loaded=!0:(window._bd_share_is_recently_loaded=!1,window._bd_share_main={version:"2.0",jscfg:{domain:{staticUrl:"https://ss1.baidu.com/9rA4cT8aBw9FktbgoI7O1ygwehsv/"}}}),!window._bd_share_is_recently_loaded&&(window._bd_share_main.F=window._bd_share_main.F||function(e,t){function r(e,t){if(e instanceof Array){for(var n=0,r=e.length;n<r;n++)if(t.call(e[n],e[n],n)===!1)return}else for(var n in e)if(e.hasOwnProperty(n)&&t.call(e[n],e[n],n)===!1)return}function i(e,t){this.svnMod="",this.name=null,this.path=e,this.fn=null,this.exports={},this._loaded=!1,this._requiredStack=[],this._readyStack=[],i.cache[this.path]=this;if(t&&t.charAt(0)!=="."){var n=t.split(":");n.length>1?(this.svnMod=n[0],this.name=n[1]):this.name=t}this.svnMod||(this.svnMod=this.path.split("/js/")[0].substr(1)),this.type="js",this.getKey=function(){return this.svnMod+":"+this.name},this._info={}}function o(e,t){var n=t=="css",r=document.createElement(n?"link":"script");return r}function u(t,n,r,i){function c(){c.isCalled||(c.isCalled=!0,clearTimeout(l),r&&r())}var s=o(t,n);s.nodeName==="SCRIPT"?a(s,c):f(s,c);var l=setTimeout(function(){throw new Error("load "+n+" timeout : "+t)},e._loadScriptTimeout||1e4),h=document.getElementsByTagName("head")[0];n=="css"?(s.rel="stylesheet",s.href=t,h.appendChild(s)):(s.type="text/javascript",s.src=t,h.insertBefore(s,h.firstChild))}function a(e,t){e.onload=e.onerror=e.onreadystatechange=function(){if(/loaded|complete|undefined/.test(e.readyState)){e.onload=e.onerror=e.onreadystatechange=null;if(e.parentNode){e.parentNode.removeChild(e);try{if(e.clearAttributes)e.clearAttributes();else for(var n in e)delete e[n]}catch(r){}}e=undefined,t&&t()}}}function f(e,t){e.attachEvent?e.attachEvent("onload",t):setTimeout(function(){l(e,t)},0)}function l(e,t){if(t&&t.isCalled)return;var n,r=navigator.userAgent,i=~r.indexOf("AppleWebKit"),s=~r.indexOf("Opera");if(i||s)e.sheet&&(n=!0);else if(e.sheet)try{e.sheet.cssRules&&(n=!0)}catch(o){if(o.name==="SecurityError"||o.name==="NS_ERROR_DOM_SECURITY_ERR")n=!0}setTimeout(function(){n?t&&t():l(e,t)},1)}var n="api";e.each=r,i.currentPath="",i.loadedPaths={},i.loadingPaths={},i.cache={},i.paths={},i.handlers=[],i.moduleFileMap={},i.requiredPaths={},i.lazyLoadPaths={},i.services={},i.isPathsLoaded=function(e){var t=!0;return r(e,function(e){if(!(e in i.loadedPaths))return t=!1}),t},i.require=function(e,t){e.search(":")<0&&(t||(t=n,i.currentPath&&(t=i.currentPath.split("/js/")[0].substr(1))),e=t+":"+e);var r=i.get(e,i.currentPath);if(r.type=="css")return;if(r){if(!r._inited){r._inited=!0;var s,o=r.svnMod;if(s=r.fn.call(null,function(e){return i.require(e,o)},r.exports,new h(r.name,o)))r.exports=s}return r.exports}throw new Error('Module "'+e+'" not found!')},i.baseUrl=t?t[t.length-1]=="/"?t:t+"/":"/",i.getBasePath=function(e){var t,n;return(n=e.indexOf("/"))!==-1&&(t=e.slice(0,n)),t&&t in i.paths?i.paths[t]:i.baseUrl},i.getJsPath=function(t,r){if(t.charAt(0)==="."){r=r.replace(/\/[^\/]+\/[^\/]+$/,""),t.search("./")===0&&(t=t.substr(2));var s=0;t=t.replace(/^(\.\.\/)+/g,function(e){return s=e.length/3,""});while(s>0)r=r.substr(0,r.lastIndexOf("/")),s--;return r+"/"+t+"/"+t.substr(t.lastIndexOf("/")+1)+".js"}var o,u,a,f,l,c;if(t.search(":")>=0){var h=t.split(":");o=h[0],t=h[1]}else r&&(o=r.split("/")[1]);o=o||n;var p=/\.css(?:\?|$)/i.test(t);p&&e._useConfig&&i.moduleFileMap[o][t]&&(t=i.moduleFileMap[o][t]);var t=l=t,d=i.getBasePath(t);return(a=t.indexOf("/"))!==-1&&(u=t.slice(0,a),f=t.lastIndexOf("/"),l=t.slice(f+1)),u&&u in i.paths&&(t=t.slice(a+1)),c=d+o+"/js/"+t+".js",c},i.get=function(e,t){var n=i.getJsPath(e,t);return i.cache[n]?i.cache[n]:new i(n,e)},i.prototype={load:function(){i.loadingPaths[this.path]=!0;var t=this.svnMod||n,r=window._bd_share_main.jscfg.domain.staticUrl+"static/"+t+"/",o=this,u=/\.css(?:\?|$)/i.test(this.name);this.type=u?"css":"js";var a="/"+this.type+"/"+i.moduleFileMap[t][this.name];e._useConfig&&i.moduleFileMap[t][this.name]?r+=this.type+"/"+i.moduleFileMap[t][this.name]:r+=this.type+"/"+this.name+(u?"":".js");if(e._firstScreenCSS.indexOf(this.name)>0||e._useConfig&&a==e._firstScreenJS)o._loaded=!0,o.ready();else{var f=(new Date).getTime();s.create({src:r,type:this.type,loaded:function(){o._info.loadedTime=(new Date).getTime()-f,o.type=="css"&&(o._loaded=!0,o.ready())}})}},lazyLoad:function(){var e=this.name;if(i.lazyLoadPaths[this.getKey()])this.define(),delete i.lazyLoadPaths[this.getKey()];else{if(this.exist())return;i.requiredPaths[this.getKey()]=!0,this.load()}},ready:function(e,t){var n=t?this._requiredStack:this._readyStack;if(e)this._loaded?e():n.push(e);else{i.loadedPaths[this.path]=!0,delete i.loadingPaths[this.path],this._loaded=!0,i.currentPath=this.path;if(this._readyStack&&this._readyStack.length>0){this._inited=!0;var s,o=this.svnMod;this.fn&&(s=this.fn.call(null,function(e){return i.require(e,o)},this.exports,new h(this.name,o)))&&(this.exports=s),r(this._readyStack,function(e){e()}),delete this._readyStack}this._requiredStack&&this._requiredStack.length>0&&(r(this._requiredStack,function(e){e()}),delete this._requiredStack)}},define:function(){var e=this,t=this.deps,n=this.path,s=[];t||(t=this.getDependents()),t.length?(r(t,function(t){s.push(i.getJsPath(t,e.path))}),r(t,function(t){var n=i.get(t,e.path);n.ready(function(){i.isPathsLoaded(s)&&e.ready()},!0),n.lazyLoad()})):this.ready()},exist:function(){var e=this.path;return e in i.loadedPaths||e in i.loadingPaths},getDependents:function(){var e=this,t=this.fn.toString(),n=t.match(/function\s*\(([^,]*),/i),i=new RegExp("[^.]\\b"+n[1]+"\\(\\s*('|\")([^()\"']*)('|\")\\s*\\)","g"),s=t.match(i),o=[];return s&&r(s,function(e,t){o[t]=e.substr(n[1].length+3).slice(0,-2)}),o}};var s={create:function(e){var t=e.src;if(t in this._paths)return;this._paths[t]=!0,r(this._rules,function(e){t=e.call(null,t)}),u(t,e.type,e.loaded)},_paths:{},_rules:[],addPathRule:function(e){this._rules.push(e)}};e.version="1.0",e.use=function(e,t){typeof e=="string"&&(e=[e]);var n=[],s=[];r(e,function(e,t){s[t]=!1}),r(e,function(e,o){var u=i.get(e),a=u._loaded;u.ready(function(){var e=u.exports||{};e._INFO=u._info,e._INFO&&(e._INFO.isNew=!a),n[o]=e,s[o]=!0;var i=!0;r(s,function(e){if(e===!1)return i=!1}),t&&i&&t.apply(null,n)}),u.lazyLoad()})},e.module=function(e,t,n){var r=i.get(e);r.fn=t,r.deps=n,i.requiredPaths[r.getKey()]?r.define():i.lazyLoadPaths[r.getKey()]=!0},e.pathRule=function(e){s.addPathRule(e)},e._addPath=function(e,t){t.slice(-1)!=="/"&&(t+="/");if(e in i.paths)throw new Error(e+" has already in Module.paths");i.paths[e]=t};var c=n;e._setMod=function(e){c=e||n},e._fileMap=function(t,n){if(typeof t=="object")r(t,function(t,n){e._fileMap(n,t)});else{var s=c;typeof n=="string"&&(n=[n]),t=t.indexOf("js/")==1?t.substr(4):t,t=t.indexOf("css/")==1?t.substr(5):t;var o=i.moduleFileMap[s];o||(o={}),r(n,function(e){o[e]||(o[e]=t)}),i.moduleFileMap[s]=o}},e._eventMap={},e.call=function(t,n,r){var i=[];for(var s=2,o=arguments.length;s<o;s++)i.push(arguments[s]);e.use(t,function(e){var t=n.split(".");for(var r=0,s=t.length;r<s;r++)e=e[t[r]];e&&e.apply(this,i)})},e._setContext=function(e){typeof e=="object"&&r(e,function(e,t){h.prototype[t]=i.require(e)})},e._setContextMethod=function(e,t){h.prototype[e]=t};var h=function(e,t){this.modName=e,this.svnMod=t};return h.prototype={domain:window._bd_share_main.jscfg.domain,use:function(t,n){typeof t=="string"&&(t=[t]);for(var r=t.length-1;r>=0;r--)t[r]=this.svnMod+":"+t[r];e.use(t,n)}},e._Context=h,e.addLog=function(t,n){e.use("lib/log",function(e){e.defaultLog(t,n)})},e.fire=function(t,n,r){e.use("lib/mod_evt",function(e){e.fire(t,n,r)})},e._defService=function(e,t){if(e){var n=i.services[e];n=n||{},r(t,function(e,t){n[t]=e}),i.services[e]=n}},e.getService=function(t,n,r){var s=i.services[t];if(!s)throw new Error(t+" mod didn't define any services");var o=s[n];if(!o)throw new Error(t+" mod didn't provide service "+n);e.use(t+":"+o,r)},e}({})),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("base/min_tangram",function(e,t){var n={};n.each=function(e,t,n){var r,i,s,o=e.length;if("function"==typeof t)for(s=0;s<o;s++){i=e[s],r=t.call(n||e,s,i);if(r===!1)break}return e};var r=function(e,t){for(var n in t)t.hasOwnProperty(n)&&(e[n]=t[n]);return e};n.extend=function(){var e=arguments[0];for(var t=1,n=arguments.length;t<n;t++)r(e,arguments[t]);return e},n.domready=function(e,t){t=t||document;if(/complete/.test(t.readyState))e();else if(t.addEventListener)"interactive"==t.readyState?e():t.addEventListener("DOMContentLoaded",e,!1);else{var n=function(){n=new Function,e()};void function(){try{t.body.doScroll("left")}catch(e){return setTimeout(arguments.callee,10)}n()}(),t.attachEvent("onreadystatechange",function(){"complete"==t.readyState&&n()})}},n.isArray=function(e){return"[object Array]"==Object.prototype.toString.call(e)},t.T=n}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("base/class",function(e,t,n){var r=e("base/min_tangram").T;t.BaseClass=function(){var e=this,t={};e.on=function(e,n){var r=t[e];r||(r=t[e]=[]),r.push(n)},e.un=function(e,n){if(!e){t={};return}var i=t[e];i&&(n?r.each(i,function(e,t){if(t==n)return i.splice(e,1),!1}):t[e]=[])},e.fire=function(n,i){var s=t[n];s&&(i=i||{},r.each(s,function(t,n){i._result=n.call(e,r.extend({_ctx:{src:e}},i))}))}};var i={};i.create=function(e,n){return n=n||t.BaseClass,function(){n.apply(this,arguments);var i=r.extend({},this);e.apply(this,arguments),this._super=i}},t.Class=i}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("conf/const",function(e,t,n){t.CMD_ATTR="data-cmd",t.CONFIG_TAG_ATTR="data-tag",t.URLS={likeSetUrl:"http://like.baidu.com/set",commitUrl:"http://s.share.baidu.com/commit",jumpUrl:"http://s.share.baidu.com",mshareUrl:"http://s.share.baidu.com/mshare",emailUrl:"http://s.share.baidu.com/sendmail",nsClick:"http://nsclick.baidu.com/v.gif",backUrl:"http://s.share.baidu.com/back",shortUrl:"http://dwz.cn/v2cut.php"}}),!window._bd_share_is_recently_loaded&&function(){window._bd_share_main.F._setMod("api"),window._bd_share_main.F._fileMap({"/js/share.js?v=da893e3e.js":["conf/define","base/fis","base/tangrammin","base/class.js","conf/define.js","conf/const.js","config","share/api_base.js","view/view_base.js","start/router.js","component/comm_tools.js","trans/trans.js"],"/js/base/tangram.js?v=37768233.js":["base/tangram"],"/js/view/share_view.js?v=3ae6026d.js":["view/share_view"],"/js/view/slide_view.js?v=08373964.js":["view/slide_view"],"/js/view/like_view.js?v=df3e0eca.js":["view/like_view"],"/js/view/select_view.js?v=85fc7cec.js":["view/select_view"],"/js/trans/data.js?v=17af2bd2.js":["trans/data"],"/js/trans/logger.js?v=d16ec0e3.js":["trans/logger"],"/js/trans/trans_bdxc.js?v=7ac21555.js":["trans/trans_bdxc"],"/js/trans/trans_bdysc.js?v=fc21acaa.js":["trans/trans_bdysc"],"/js/trans/trans_weixin.js?v=080be124.js":["trans/trans_weixin"],"/js/share/combine_api.js?v=8d37a7b3.js":["share/combine_api"],"/js/share/like_api.js?v=d3693f0a.js":["share/like_api"],"/js/share/likeshare.js?v=e1f4fbf1.js":["share/likeshare"],"/js/share/share_api.js?v=226108fe.js":["share/share_api"],"/js/share/slide_api.js?v=ec14f516.js":["share/slide_api"],"/js/component/animate.js?v=5b737477.js":["component/animate"],"/js/component/anticheat.js?v=44b9b245.js":["component/anticheat"],"/js/component/partners.js?v=911c4302.js":["component/partners"],"/js/component/pop_base.js?v=36f92e70.js":["component/pop_base"],"/js/component/pop_dialog.js?v=d479767d.js":["component/pop_dialog"],"/js/component/pop_popup.js?v=4387b4e1.js":["component/pop_popup"],"/js/component/pop_popup_slide.js?v=b16a1f10.js":["component/pop_popup_slide"],"/js/component/qrcode.js?v=d69754a9.js":["component/qrcode"],"/css/share_style0_16.css?v=6aba13f0.css":["share_style0_16.css"],"/css/share_style0_32.css?v=4413acf0.css":["share_style0_32.css"],"/css/share_style2.css?v=611d4f74.css":["share_style2.css"],"/css/share_style4.css?v=cef2b8f3.css":["share_style4.css"],"/css/slide_share.css?v=9c50d088.css":["slide_share.css"],"/css/share_popup.css?v=240f357d.css":["share_popup.css"],"/css/like.css?v=d52a0ea5.css":["like.css"],"/css/imgshare.css?v=a7830602.css":["imgshare.css"],"/css/select_share.css?v=15f56735.css":["select_share.css"],"/css/weixin_popup.css?v=1a56666e.css":["weixin_popup.css"]}),window._bd_share_main.F._loadScriptTimeout=15e3,window._bd_share_main.F._useConfig=!0,window._bd_share_main.F._firstScreenCSS="",window._bd_share_main.F._firstScreenJS=""}(),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.use("base/min_tangram",function(e){function n(e,t,n){var r=new e(n);r.setView(new t(n)),r.init(),n&&n._handleId&&(_bd_share_main.api=_bd_share_main.api||{},_bd_share_main.api[n._handleId]=r)}function r(e,r){window._bd_share_main.F.use(e,function(e,i){t.isArray(r)?t.each(r,function(t,r){n(e.Api,i.View,r)}):n(e.Api,i.View,r)})}function i(e){var n=e.common||window._bd_share_config&&_bd_share_config.common||{},r={like:{type:"like"},share:{type:"share",bdStyle:0,bdMini:2,bdSign:"on"},slide:{type:"slide",bdStyle:"1",bdMini:2,bdImg:0,bdPos:"right",bdTop:100,bdSign:"on"},image:{viewType:"list",viewStyle:"0",viewPos:"top",viewColor:"black",viewSize:"16",viewList:["qzone","tsina","huaban","tqq","renren"]},selectShare:{type:"select",bdStyle:0,bdMini:2,bdSign:"on"}},i={share:{__cmd:"",__buttonType:"",__type:"",__element:null},slide:{__cmd:"",__buttonType:"",__type:"",__element:null},image:{__cmd:"",__buttonType:"",__type:"",__element:null}};return t.each(["like","share","slide","image","selectShare"],function(s,o){e[o]&&(t.isArray(e[o])&&e[o].length>0?t.each(e[o],function(s,u){e[o][s]=t.extend({},r[o],n,u,i[o])}):e[o]=t.extend({},r[o],n,e[o],i[o]))}),e}var t=e.T;_bd_share_main.init=function(e){e=e||window._bd_share_config||{share:{}};if(e){var t=i(e);t.like&&r(["share/like_api","view/like_view"],t.like),t.share&&r(["share/share_api","view/share_view"],t.share),t.slide&&r(["share/slide_api","view/slide_view"],t.slide),t.selectShare&&r(["share/select_api","view/select_view"],t.selectShare),t.image&&r(["share/image_api","view/image_view"],t.image)}},window._bd_share_main._LogPoolV2=[],window._bd_share_main.n1=(new Date).getTime(),t.domready(function(){window._bd_share_main.n2=(new Date).getTime()+1e3,_bd_share_main.init(),setTimeout(function(){window._bd_share_main.F.use("trans/logger",function(e){e.nsClick(),e.back(),e.duration()})},3e3)})}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("component/comm_tools",function(e,t){var n=function(){var e=window.location||document.location||{};return e.href||""},r=function(e,t){var n=e.length,r="";for(var i=1;i<=t;i++){var s=Math.floor(n*Math.random());r+=e.charAt(s)}return r},i=function(){var e=(+(new Date)).toString(36),t=r("0123456789abcdefghijklmnopqrstuvwxyz",3);return e+t};t.getLinkId=i,t.getPageUrl=n}),!window._bd_share_is_recently_loaded&&window._bd_share_main.F.module("trans/trans",function(e,t){var n=e("component/comm_tools"),r=e("conf/const").URLS,i=function(){window._bd_share_main.F.use("base/tangram",function(e){var t=e.T;t.cookie.get("bdshare_firstime")==null&&t.cookie.set("bdshare_firstime",new Date*1,{path:"/",expires:(new Date).setFullYear(2022)-new Date})})},s=function(e){var t=e.bdUrl||n.getPageUrl();return t=t.replace(/\'/g,"%27").replace(/\"/g,"%22"),t},o=function(e){var t=(new Date).getTime()+3e3,r={click:1,url:s(e),uid:e.bdUid||"0",to:e.__cmd,type:"text",pic:e.bdPic||"",title:(e.bdText||document.title).substr(0,300),key:(e.bdSnsKey||{})[e.__cmd]||"",desc:e.bdDesc||"",comment:e.bdComment||"",relateUid:e.bdWbuid||"",searchPic:e.bdSearchPic||0,sign:e.bdSign||"on",l:window._bd_share_main.n1.toString(32)+window._bd_share_main.n2.toString(32)+t.toString(32),linkid:n.getLinkId(),firstime:a("bdshare_firstime")||""};switch(e.__cmd){case"copy":l(r);break;case"print":c();break;case"bdxc":h();break;case"bdysc":p(r);break;case"weixin":d(r);break;default:u(e,r)}window._bd_share_main.F.use("trans/logger",function(t){t.commit(e,r)})},u=function(e,t){var n=r.jumpUrl;e.__cmd=="mshare"?n=r.mshareUrl:e.__cmd=="mail"&&(n=r.emailUrl);var i=n+"?"+f(t);window.open(i)},a=function(e){if(e){var t=new RegExp("(^| )"+e+"=([^;]*)(;|$)"),n=t.exec(document.cookie);if(n)return decodeURIComponent(n[2]||null)}},f=function(e){var t=[];for(var n in e)t.push(encodeURIComponent(n)+"="+encodeURIComponent(e[n]));return t.join("&").replace(/%20/g,"+")},l=function(e){window._bd_share_main.F.use("base/tangram",function(t){var r=t.T;r.browser.ie?(window.clipboardData.setData("text",document.title+" "+(e.bdUrl||n.getPageUrl())),alert("\u6807\u9898\u548c\u94fe\u63a5\u590d\u5236\u6210\u529f\uff0c\u60a8\u53ef\u4ee5\u63a8\u8350\u7ed9QQ/MSN\u4e0a\u7684\u597d\u53cb\u4e86\uff01")):window.prompt("\u60a8\u4f7f\u7528\u7684\u662f\u975eIE\u6838\u5fc3\u6d4f\u89c8\u5668\uff0c\u8bf7\u6309\u4e0b Ctrl+C \u590d\u5236\u4ee3\u7801\u5230\u526a\u8d34\u677f",document.title+" "+(e.bdUrl||n.getPageUrl()))})},c=function(){window.print()},h=function(){window._bd_share_main.F.use("trans/trans_bdxc",function(e){e&&e.run()})},p=function(e){window._bd_share_main.F.use("trans/trans_bdysc",function(t){t&&t.run(e)})},d=function(e){window._bd_share_main.F.use("trans/trans_weixin",function(t){t&&t.run(e)})},v=function(e){o(e)};t.run=v,i()});
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1.10.2_d88366fd.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-min-1.2.1.js"></script>
+<script>AV.init({appId:"yqwM1H3ohsqaUqxBa2balXfY-gzGzoHsz", appKey:"gE3VrJwiTB3lfORQlaUvi2RO"});</script>
+<script>
+  var fakeCount = 500;
+function showCount (Counter){
+  var query=new AV.Query(Counter);
+
+  query.find({
+    success: function(results){
+
+            for(var i=0;i<results.length;i++)    
+            {
+                var counter=results[i];
+                var url=counter.get("url");
+                var time=counter.get("time");
+
+                try {
+                  $('#'+url+'learnCount').text(parseInt(time)+fakeCount);
+                }catch(e){}
+                
+            }
+        },
+    error: function(error){
+        console.log(error);
+        // alert("Error:"+error.code+" "+error.message);
+    }
+  });
+}
+function addCount (Counter) {
+    
+    var url=window.location.pathname.replace(/\//g,'').replace('.','').trim();
+    var title = $('.article-title').text().trim();
+    var query=new AV.Query(Counter);
+
+    query.equalTo("url",url);
+    query.find({
+        success: function(results){
+            if(results.length>0)
+            {
+
+                var counter=results[0];
+
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+
+                counter.save();
+
+                $('#'+url+'learnCount').text(parseInt(counter.get("time"))+fakeCount);
+            }
+            else
+            {
+                var newcounter=new Counter();
+
+                newcounter.set("title",title);
+                newcounter.set("url",url);
+                newcounter.set("time",1);
+
+                newcounter.save();
+            }
+        },
+        error: function(error){
+          console.log(error);
+            // alert('Error:'+error.code+" "+error.message);
+        }
+    });
+}
+var Counter=AV.Object.extend("Counter2");
+if (window.location.href.indexOf('index.php/archives') > -1) {
+    addCount(Counter);
+} else {
+    showCount(Counter);
+}
+</script>
+<script>
+
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cc3b1819bb80c692fc8d2c31352da6a7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<style type="text/css">
+    .pwa-tips {
+        position: fixed;
+        top: 13px;
+        left: 10%;
+        right: 10%;
+        height: 50px;
+        border-radius: 3px;
+        text-align: center;
+        background-color: #343a44;
+        color: #f1f1f1;
+        line-height: 50px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(22,22,22,.5), 0 2px 3px rgba(2,2,2,.5);
+        transition: all 1s;
+        opacity: 0;
+        display: none;
+    }
+    .pwa-tips .close {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        background-color: #fff;
+        width: 15px;
+        height: 15px;
+        line-height: 13px;
+        color: #000;
+        border-radius: 50%;
+        position: 9;
+    }
+
+</style>
+  <div class="pwa-tips" id="pwaTips">吕小鸣的前端博客正在使用PWA，是否安装到桌面？<span id="closepwaTips" class="close">x</span></div>
+  <script type="text/javascript">
+        var dfdPrompt = null;
+        var clickTips = false;
+        var pwaTips = document.getElementById('pwaTips');
+        var closepwaTips = document.getElementById('closepwaTips');
+        window.addEventListener('beforeinstallprompt', function (e) {
+            if (clickTips) return;
+            // 存储事件
+            dfdPrompt = e;
+            // 显示按钮
+            pwaTips.style.display = 'block';
+            setTimeout(function(){
+                pwaTips.style.opacity = '1';
+            },100)
+            
+
+            // 阻止默认事件
+            e.preventDefault();
+            return false;
+        });
+        pwaTips.addEventListener('click', function (e) {
+            if (dfdPrompt == null || e.srcElement.classList.contains('close')) {
+                return;
+            }
+            // 通过按钮点击事件触发横幅显示
+            dfdPrompt.prompt();
+            // 监控用户的安装行为
+            dfdPrompt.userChoice.then(function (choiceResult) {
+                // alert(choiceResult.outcome);
+            });
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+            dfdPrompt = null;
+            clickTips = true;
+        });
+        closepwaTips.addEventListener('click', function (e) {
+
+            // 隐藏按钮
+            pwaTips.style.opacity = '0';
+            setTimeout(function(){
+                pwaTips.style.display = 'none';
+            },1000);
+        });
+</script>
+
+</div>
+</body>
+</html>

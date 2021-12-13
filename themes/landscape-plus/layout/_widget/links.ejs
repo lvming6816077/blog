@@ -1,0 +1,15 @@
+<% if (site.posts.length){ %>
+  <div class="widget-wrap">
+    
+    <div class="widget">
+      <h3 class="widget-title-l"><%= __('links') %></h3>
+      <ul>
+        <% for (var i in (config.links || theme.links)){ %>
+          <li>
+            <a href="<%- theme.links[i] %>" target="_blank"><%= i %></a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+<% } %>
