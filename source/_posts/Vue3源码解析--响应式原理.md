@@ -9,7 +9,6 @@ categories:
 
 ---
 
-# Vue 3响应式核心原理解析
 
 响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。
 <!--more-->

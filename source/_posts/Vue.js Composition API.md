@@ -9,7 +9,6 @@ categories:
 
 ---
 
-# Vue.js3 Composition API
 
 在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。
 <!--more-->
