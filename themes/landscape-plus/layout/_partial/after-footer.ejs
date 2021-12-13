@@ -49,80 +49,8 @@ window._bd_share_main?window._bd_share_is_recently_loaded=!0:(window._bd_share_i
 <%- partial('mathjax') %>
 <% } %>
 <%- js('js/script') %>
-<script src="https://cdn1.lncld.net/static/js/av-min-1.2.1.js"></script>
-<script>AV.init({appId:"yqwM1H3ohsqaUqxBa2balXfY-gzGzoHsz", appKey:"gE3VrJwiTB3lfORQlaUvi2RO"});</script>
-<script>
-  var fakeCount = 500;
-function showCount (Counter){
-  var query=new AV.Query(Counter);
 
-  query.find({
-    success: function(results){
-
-            for(var i=0;i<results.length;i++)    
-            {
-                var counter=results[i];
-                var url=counter.get("url");
-                var time=counter.get("time");
-
-                try {
-                  $('#'+url+'learnCount').text(parseInt(time)+fakeCount);
-                }catch(e){}
-                
-            }
-        },
-    error: function(error){
-        console.log(error);
-        // alert("Error:"+error.code+" "+error.message);
-    }
-  });
-}
-function addCount (Counter) {
-    
-    var url=window.location.pathname.replace(/\//g,'').replace('.','').trim();
-    var title = $('.article-title').text().trim();
-    var query=new AV.Query(Counter);
-
-    query.equalTo("url",url);
-    query.find({
-        success: function(results){
-            if(results.length>0)
-            {
-
-                var counter=results[0];
-
-                counter.fetchWhenSave(true);
-                counter.increment("time");
-
-                counter.save();
-
-                $('#'+url+'learnCount').text(parseInt(counter.get("time"))+fakeCount);
-            }
-            else
-            {
-                var newcounter=new Counter();
-
-                newcounter.set("title",title);
-                newcounter.set("url",url);
-                newcounter.set("time",1);
-
-                newcounter.save();
-            }
-        },
-        error: function(error){
-          console.log(error);
-            // alert('Error:'+error.code+" "+error.message);
-        }
-    });
-}
-var Counter=AV.Object.extend("Counter2");
-if (window.location.href.indexOf('index.php/archives') > -1) {
-    addCount(Counter);
-} else {
-    showCount(Counter);
-}
-</script>
-<script>
+<!--<script>
 
 var _hmt = _hmt || [];
 (function() {
@@ -131,7 +59,7 @@ var _hmt = _hmt || [];
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 })();
-</script>
+</script>-->
 <style type="text/css">
     .pwa-tips {
         position: fixed;
@@ -211,4 +139,32 @@ var _hmt = _hmt || [];
                 pwaTips.style.display = 'none';
             },1000);
         });
-</script>
+  </script>
+  <!--2d次元插件--> 
+<script src="/live2dw/lib/L2Dwidget.min.js"></script> 
+<script type="text/javascript"> 
+  var arr = ['wanko','hibiki','hijiki','tororo']; 
+  var index = Math.floor((Math.random()*arr.length)); 
+    
+  //狗var name = 'wanko';  
+  //水手服var name = 'hibiki'; 
+  //小黑猫var name = 'hijiki'; 
+  //小白猫var name = 'tororo'; 
+    
+  var name = arr[index];  
+      
+   L2Dwidget.init({ 
+     pluginRootPath: "live2dw/",  
+     pluginJsPath: "lib/",  
+     pluginModelPath: "live2d-widget-model-"+name+"/assets/", 
+     tagMode: false,  
+     debug: false,  
+     model: { jsonPath: "/live2dw/live2d-widget-model-"+name+"/assets/"+name+".model.json" }, 
+     display: { position: "left", width: 150, height: 300 },  
+     mobile: { show: true },  
+     log: false 
+   }) 
+    
+  </script> 
+  <!--聊天插件 注释于20211213--> 
+  <!--<script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="316da471-3d2b-485e-ab0f-7071d57f9b5b";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>--> 
