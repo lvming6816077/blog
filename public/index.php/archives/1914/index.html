@@ -16,19 +16,19 @@
   
   <title>Vue.js Composition API | 吕小鸣前端博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Vue.js3 Composition API在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
+  <meta name="description" content="在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
 <meta name="keywords" content="vue3,Composition API">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue.js Composition API">
 <meta property="og:url" content="http://www.nihaoshijie.com.cn/index.php/archives/1914/index.html">
 <meta property="og:site_name" content="吕小鸣前端博客">
-<meta property="og:description" content="Vue.js3 Composition API在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
+<meta property="og:description" content="在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f9f354a4b414d1c9b70e83eb41a098a~tplv-k3u1fbpfcp-watermark.image?">
-<meta property="og:updated_time" content="2021-12-10T16:13:46.236Z">
+<meta property="og:updated_time" content="2021-12-13T01:32:23.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue.js Composition API">
-<meta name="twitter:description" content="Vue.js3 Composition API在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
+<meta name="twitter:description" content="在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。">
 <meta name="twitter:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6f9f354a4b414d1c9b70e83eb41a098a~tplv-k3u1fbpfcp-watermark.image?">
   
     <link rel="alternative" href="/atom.xml" title="吕小鸣前端博客" type="application/atom+xml">
@@ -156,7 +156,7 @@ if ('serviceWorker' in navigator) {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1><span id="vuejs3-composition-api">Vue.js3 Composition API</span></h1><p>在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。<br><a id="more"></a><br>通过创建Vue组件，我们可以将界面中重复的部分连同其功能一起提取为可重用的代码段。仅此一项就可以使我们的应用在可维护性和灵活性方面走得相当远。然而，我们的经验已经证明，光靠这一点可能并不够，尤其是当你的应用变得非常大的时候——想想几百个组件。处理这样的大型应用时，共享和重用代码变得尤为重要。</p>
+        <p>在Vue 3引入的Composition API翻译过来就叫做组合式API，所谓组合式就是我们可以自由的组合逻辑，即剥离公共逻辑，差异化个性逻辑，维护整体逻辑。我们知道一个大型的Vue应用就是业务逻辑的综合体，而Vue组件就是组成这个综合体的个体。<br><a id="more"></a><br>通过创建Vue组件，我们可以将界面中重复的部分连同其功能一起提取为可重用的代码段。仅此一项就可以使我们的应用在可维护性和灵活性方面走得相当远。然而，我们的经验已经证明，光靠这一点可能并不够，尤其是当你的应用变得非常大的时候——想想几百个组件。处理这样的大型应用时，共享和重用代码变得尤为重要。</p>
 <p>Composition API给我们提供了更加高效的代码逻辑组合能力，整体提示项目的可维护性，是函数式编程的重要体现。</p>
 <h2><span id="composition-api-基础">Composition API 基础</span></h2><p>通常，一个Vue组件对象大概是包括一些data属性，生命周期钩子函数，methods，components，props等等的配置项的Object对象，如示例代码所示。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'test'</span>,</span><br><span class="line">  components: &#123;&#125;,</span><br><span class="line">  props: &#123;&#125;,</span><br><span class="line">  data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created()&#123;&#125;,</span><br><span class="line">  mounted () &#123;&#125;,</span><br><span class="line">  watch:&#123;&#125;,</span><br><span class="line">  methods: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -330,7 +330,7 @@ if ('serviceWorker' in navigator) {
 
     <footer class="article-footer">
       
-        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/1914/" data-id="ckx0lwh8n001gitnf6ml74d8u" class="article-share-link" data-share="baidu" data-title="Vue.js Composition API">分享到</a>
+        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/1914/" data-id="ckx404brc001704vjkdytookc" class="article-share-link" data-share="baidu" data-title="Vue.js Composition API">分享到</a>
       
 
       <a href="http://www.nihaoshijie.com.cn/index.php/archives/1914/#ds-thread" class="article-comment-link"><span class="dot">•</span>
@@ -369,7 +369,7 @@ if ('serviceWorker' in navigator) {
 
 
   <!--搜狐畅言 PC和WAP自适应版 添加于20190402 删除于20200402-->
-<div id="SOHUCS" sid="ckx0lwh8n001gitnf6ml74d8u" ></div> 
+<div id="SOHUCS" sid="ckx404brc001704vjkdytookc" ></div> 
 <script type="text/javascript"> 
 /*(function(){ 
 var appid = 'cyuabuJwF'; 

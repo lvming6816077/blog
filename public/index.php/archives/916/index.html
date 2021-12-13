@@ -16,23 +16,23 @@
   
   <title>Vue3源码解析--虚拟DOM | 吕小鸣前端博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Vue3源码解析–虚拟DOM什么是虚拟DOM在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。">
+  <meta name="description" content="什么是虚拟DOM在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。">
 <meta name="keywords" content="Vue3,源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue3源码解析--虚拟DOM">
 <meta property="og:url" content="http://www.nihaoshijie.com.cn/index.php/archives/916/index.html">
 <meta property="og:site_name" content="吕小鸣前端博客">
-<meta property="og:description" content="Vue3源码解析–虚拟DOM什么是虚拟DOM在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。">
+<meta property="og:description" content="什么是虚拟DOM在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/447220e690a64adfb3a008573746d95c~tplv-k3u1fbpfcp-watermark.image?">
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/159a46e93d5f4c87980cfb549c8ab024~tplv-k3u1fbpfcp-watermark.image?">
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/479408c50a0d40a586b31f70d9c3a16d~tplv-k3u1fbpfcp-watermark.image?">
 <meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4f3fe695743a49ee99fd69c98ccc2331~tplv-k3u1fbpfcp-watermark.image?">
 <meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/447220e690a64adfb3a008573746d95c~tplv-k3u1fbpfcp-watermark.image?">
-<meta property="og:updated_time" content="2021-12-10T16:13:02.965Z">
+<meta property="og:updated_time" content="2021-12-13T01:32:10.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue3源码解析--虚拟DOM">
-<meta name="twitter:description" content="Vue3源码解析–虚拟DOM什么是虚拟DOM在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。">
+<meta name="twitter:description" content="什么是虚拟DOM在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。">
 <meta name="twitter:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/447220e690a64adfb3a008573746d95c~tplv-k3u1fbpfcp-watermark.image?">
   
     <link rel="alternative" href="/atom.xml" title="吕小鸣前端博客" type="application/atom+xml">
@@ -160,7 +160,7 @@ if ('serviceWorker' in navigator) {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1><span id="vue3源码解析虚拟dom">Vue3源码解析–虚拟DOM</span></h1><h2><span id="什么是虚拟dom">什么是虚拟DOM</span></h2><p>在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。<br><a id="more"></a><br>虚拟DOM就是为了解决上述浏览器性能问题而被设计出来的。当一次操作中有10次更新DOM的动作，虚拟DOM不会立即操作DOM，而是和原本的DOM进行对比，将这10次更新的变化部分内容保存到内存中，最终一次性的应用在到DOM树上，再进行后续操作，避免大量无谓的计算量。</p>
+        <h2><span id="什么是虚拟dom">什么是虚拟DOM</span></h2><p>在浏览器中，HTML页面由基本的DOM树来组成的，当其中一部分发生变化时，其实就是对应某个DOM节点发生了变化，当DOM节点发生变化时就会触发对应的重绘或者重排，当过多的重绘和重排在短时间内发生时，就会可能引起页面的卡顿，所以改变DOM是有一些代价的，那么如何优化DOM变化的次数以及在合适的时机改变DOM就是开发者需要注意的事情。<br><a id="more"></a><br>虚拟DOM就是为了解决上述浏览器性能问题而被设计出来的。当一次操作中有10次更新DOM的动作，虚拟DOM不会立即操作DOM，而是和原本的DOM进行对比，将这10次更新的变化部分内容保存到内存中，最终一次性的应用在到DOM树上，再进行后续操作，避免大量无谓的计算量。</p>
 <p>虚拟DOM实际上就是采用JavaScript对象来存储DOM节点的信息，将DOM的更新变成对象的修改，并且这些修改计算在内存中发生，当修改完成后，再将JavaScript转换成真实的DOM节点，交给浏览器，从而达到性能的提升。<br>例如下面一段DOM节点，如下代码所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;p class=&quot;text&quot;&gt;Hello&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
 <p>转换成一般的虚拟DOM对象结构，如下代码所示：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  tag: <span class="string">'div'</span>,</span><br><span class="line">  props: &#123;</span><br><span class="line">    id: <span class="string">'app'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  chidren: [</span><br><span class="line">    &#123;</span><br><span class="line">      tag: <span class="string">'p'</span>,</span><br><span class="line">      props: &#123;</span><br><span class="line">        className: <span class="string">'text'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      chidren: [</span><br><span class="line">        <span class="string">'Hello'</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>上面这段代码就是一个基本的虚拟DOM，但是他并非是Vue中使用的虚拟DOM结构，因为Vue要复杂的多。</p>
@@ -233,7 +233,7 @@ if ('serviceWorker' in navigator) {
 
     <footer class="article-footer">
       
-        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/916/" data-id="ckx0lwh8v001sitnf53g5x0mw" class="article-share-link" data-share="baidu" data-title="Vue3源码解析--虚拟DOM">分享到</a>
+        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/916/" data-id="ckx404brl001i04vjv9fphz2e" class="article-share-link" data-share="baidu" data-title="Vue3源码解析--虚拟DOM">分享到</a>
       
 
       <a href="http://www.nihaoshijie.com.cn/index.php/archives/916/#ds-thread" class="article-comment-link"><span class="dot">•</span>
@@ -272,7 +272,7 @@ if ('serviceWorker' in navigator) {
 
 
   <!--搜狐畅言 PC和WAP自适应版 添加于20190402 删除于20200402-->
-<div id="SOHUCS" sid="ckx0lwh8v001sitnf53g5x0mw" ></div> 
+<div id="SOHUCS" sid="ckx404brl001i04vjv9fphz2e" ></div> 
 <script type="text/javascript"> 
 /*(function(){ 
 var appid = 'cyuabuJwF'; 

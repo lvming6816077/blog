@@ -16,18 +16,18 @@
   
   <title>Vue3源码解析--响应式原理 | 吕小鸣前端博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Vue 3响应式核心原理解析响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。">
+  <meta name="description" content="响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。">
 <meta name="keywords" content="Vue3,源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue3源码解析--响应式原理">
 <meta property="og:url" content="http://www.nihaoshijie.com.cn/index.php/archives/914/index.html">
 <meta property="og:site_name" content="吕小鸣前端博客">
-<meta property="og:description" content="Vue 3响应式核心原理解析响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。">
+<meta property="og:description" content="响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-12-10T16:13:34.519Z">
+<meta property="og:updated_time" content="2021-12-13T01:32:03.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue3源码解析--响应式原理">
-<meta name="twitter:description" content="Vue 3响应式核心原理解析响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。">
+<meta name="twitter:description" content="响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。">
   
     <link rel="alternative" href="/atom.xml" title="吕小鸣前端博客" type="application/atom+xml">
   
@@ -154,7 +154,7 @@ if ('serviceWorker' in navigator) {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1><span id="vue-3响应式核心原理解析">Vue 3响应式核心原理解析</span></h1><p>响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。<br><a id="more"></a></p>
+        <p>响应式reactivity是Vue 3相对于Vue 2改动比较大的一个模块，也是性能提升最多的一个模块。其核心改变是采用了ES 6的Proxy API来代替Vue2中Object.defineProperty方法来实现响应式，那么什么是Proxy API呢，Vue 3的响应式又是如何实现的，下面将会进行揭晓。<br><a id="more"></a></p>
 <h2><span id="proxy-api">Proxy API</span></h2><p>Proxy API对应的Proxy对象是ES6就已引入的一个原生对象，用于定义基本操作的自定义行为（如属性查找、赋值、枚举、函数调用等）。 从字面意思来理解，Proxy对象是目标对象的一个代理器，任何对目标对象的操作（实例化，添加/删除/修改属性等等），都必须通过该代理器。因此我们可以把来自外界的所有操作进行拦截和过滤或者修改等操作。 基于Proxy的这些特性，常用于：</p>
 <ul>
 <li>创建一个可“响应式”的对象，例如Vue3.0中的reactive方法。</li>
@@ -222,7 +222,7 @@ if ('serviceWorker' in navigator) {
 
     <footer class="article-footer">
       
-        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/914/" data-id="ckx0lwh8t001mitnfdyyi50do" class="article-share-link" data-share="baidu" data-title="Vue3源码解析--响应式原理">分享到</a>
+        <a data-url="http://www.nihaoshijie.com.cn/index.php/archives/914/" data-id="ckx404brf001b04vjpb6ujbvq" class="article-share-link" data-share="baidu" data-title="Vue3源码解析--响应式原理">分享到</a>
       
 
       <a href="http://www.nihaoshijie.com.cn/index.php/archives/914/#ds-thread" class="article-comment-link"><span class="dot">•</span>
@@ -261,7 +261,7 @@ if ('serviceWorker' in navigator) {
 
 
   <!--搜狐畅言 PC和WAP自适应版 添加于20190402 删除于20200402-->
-<div id="SOHUCS" sid="ckx0lwh8t001mitnfdyyi50do" ></div> 
+<div id="SOHUCS" sid="ckx404brf001b04vjpb6ujbvq" ></div> 
 <script type="text/javascript"> 
 /*(function(){ 
 var appid = 'cyuabuJwF'; 
