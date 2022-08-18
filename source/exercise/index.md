@@ -2,10 +2,31 @@
 title: 练习作品
 date: 2017-05-07 15:49:41
 ---
-Github:[https://github.com/lvming6816077](lvming6816077)
 
 
+***
 
+* *从0到1 实战朋友圈移动Web App开发*
+
+[https://app.nihaoshijie.com.cn/](https://app.nihaoshijie.com.cn/)
+
+
+***
+
+* *H5手势解锁*
+
+[https://github.com/lvming6816077/H5lock](https://github.com/lvming6816077/H5lock)
+
+
+***
+
+
+* *【Simple Sheet】开源在线文档*
+
+
+[https://www.nihaoshijie.com.cn/mypro/simple-sheet/index.html](https://www.nihaoshijie.com.cn/mypro/simple-sheet/index.html)
+
+***
 
 * *一个单页面的网页，主要调侃了一个爱情故事，点进去看啊！具体做法会在以后博客里面说明。*
 
@@ -18,7 +39,6 @@ Github:[https://github.com/lvming6816077](lvming6816077)
 下载地址：http://app.mi.com/detail/59367
 
 [http://www.nihaoshijie.com.cn/mypro/tetris](http://www.nihaoshijie.com.cn/mypro/tetris)
-
 
 
 ***
@@ -36,27 +56,8 @@ Github:[https://github.com/lvming6816077](lvming6816077)
 
 
 
-***
-
-* *ios采集音视频数据并通过rtmp上传到nginx*
-
-[https://github.com/lvming6816077/LMVideoTest](https://github.com/lvming6816077/LMVideoTest)
 
 
-***
+更多尽在：
 
-* *H5手势解锁*
-
-[https://github.com/lvming6816077/H5lock](https://github.com/lvming6816077/H5lock)
-
-
-***
-
-* *创业项目：直播贴类型app*
-
-[https://github.com/lvming6816077/zhiboapp](https://github.com/lvming6816077/zhiboapp)
-
-
-
-
-
+* *Github:[https://github.com/lvming6816077](lvming6816077)*
